@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Order Extractor",
+  "description": "Extracts order details and opens a report tab with one-click copy buttons for Stamps.com.",
+  "version": "1.0.56",
+  "author": "Gemini Assistant",
+  "permissions": [
+    "menus",
+    "messagesRead",
+    "accountsRead",
+    "tabs",
+    "clipboardWrite",
+    "storage",
+    "compose",
+    "messageDisplay"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "order-extractor@shane",
+      "strict_min_version": "115.0"
+    }
+  }
+}
