@@ -79,7 +79,7 @@ async function processSelection(text) {
         data.dateObj = new Date(); 
         data.dateStr = formatDate24h(data.dateObj);
         data.subject = "Manual Entry"; 
-        data.source = "manual"; // Tag source
+        data.source = "manual"; 
         
         let storage = await browser.storage.local.get("reportData");
         let currentData = storage.reportData || [];
@@ -173,7 +173,6 @@ function parseMessageContent(rawBody, header) {
 
     let data;
 
-    // --- LOGIC UPDATE: Tagging Source ---
     if (/^\d{2}-\d{5}-\d{5}$/.test(cleanSubject)) {
         data = parseDirectFormat(body, cleanSubject);
         data.source = "manual";
@@ -186,7 +185,6 @@ function parseMessageContent(rawBody, header) {
         data = parseEbay(body);
         data.source = "ebay";
     }
-    // ------------------------------------
 
     data.sender = senderEmail;
     data.subject = cleanSubject;

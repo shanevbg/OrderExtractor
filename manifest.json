@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Order Extractor",
-  "description": "Extracts order details and opens a report tab with one-click copy buttons for Stamps.com.",
-  "version": "1.0.56",
-  "author": "Gemini Assistant",
+  "description": "Extracts order details and opens a report tab.",
+  "version": "1.0.57",
+  "author": "Shane Vincent",
   "permissions": [
     "menus",
     "messagesRead",
