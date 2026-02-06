@@ -1,6 +1,6 @@
 /**
  * Order Extractor - Report Logic
- * Version: 1.0.57 (Safe Mode)
+ * Version: 1.0.68 (Safe Mode)
  */
 
 function escapeHtml(text) {
@@ -27,41 +27,48 @@ function deleteRow(btn) {
 }
 
 function parseAddressForCSV(linesRaw) {
-    let lines = linesRaw.slice(); 
+    let lines = linesRaw.slice().map(l => l.trim());
     let result = { name: "", address1: "", address2: "", city: "", state: "", zip: "", country: "", phone: "", email: "" };
     if (lines.length === 0) return result;
 
-    lines = lines.filter(function(line) {
-        let isPhone = /^(\+?\d[\d\-\s\(\)]{7,}\d)$/.test(line);
-        let isEmail = /^[\w\.-]+@[\w\.-]+\.\w+$/.test(line);
-        if (isPhone) result.phone = line;
-        if (isEmail) result.email = line;
-        return !isPhone && !isEmail;
-    });
-
-    if (lines.length > 0) result.name = lines.shift();
-    if (lines.length > 0 && /United Kingdom|Canada|Australia|Puerto Rico|USA|United States/i.test(lines[lines.length - 1])) {
+    // 1. Extract Country (Last line if it's a known country name)
+    const countries = /United Kingdom|UK|GBR|Canada|Australia|Puerto Rico|USA|United States/i;
+    if (countries.test(lines[lines.length - 1])) {
         result.country = lines.pop();
     } else {
         result.country = "United States";
     }
 
-    if (lines.length > 0) {
-        let last = lines[lines.length - 1];
-        let cszMatch = last.match(/^(.*?)[,\s]+([A-Za-z]{2,3})[,\s]+([\d\w\-\s]{3,10})$/);
-        if (cszMatch) {
-            result.city = cszMatch[1].trim();
-            result.state = cszMatch[2].trim();
-            result.zip = cszMatch[3].trim();
-            lines.pop();
-        } else {
-            result.city = last;
-            lines.pop();
+    // 2. Identify UK Postcode or US Zip
+    // Matches: "SW1A 2AA", "B37 9EB", or "62704"
+    const pcRegex = /([A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})|(\d{5}(-\d{4})?)/i;
+    
+    // Look at the new last line (could be city/state/zip or just zip)
+    let lastLine = lines[lines.length - 1];
+    let pcMatch = lastLine.match(pcRegex);
+
+    if (pcMatch) {
+        result.zip = pcMatch[0];
+        // If the line has more than just the zip, it's likely "City, State Zip"
+        let cityStatePart = lastLine.replace(pcMatch[0], "").trim().replace(/,$/, "");
+        if (cityStatePart) {
+            let parts = cityStatePart.split(/[\s,]+/);
+            result.state = parts.pop();
+            result.city = parts.join(" ");
         }
+        lines.pop(); // Remove the zip/city line
     }
 
+    // 3. Handle remaining lines (Name, Address, Province)
+    if (lines.length > 0) result.name = lines.shift();
     if (lines.length > 0) result.address1 = lines.shift();
-    if (lines.length > 0) result.address2 = lines.join(", ");
+    
+    // If there is still a line left, it's often the "Province" or "County"
+    if (lines.length > 0) {
+        result.state = result.state || lines.pop(); // Use as state if not found yet
+        result.address2 = lines.join(", ");
+    }
+
     return result;
 }
 
