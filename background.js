@@ -63,6 +63,7 @@ async function processMessages() {
             if (!body) continue;
 
             let data = parseMessageContent(body, header);
+            data.rawBody = body; // Save the body text
             if (data.product !== "Unknown" || data.order !== "Unknown") {
                 data.messageId = header.id;
                 extractedData.push(data);
