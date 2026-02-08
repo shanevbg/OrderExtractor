@@ -1,71 +1,50 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Order Extraction Report</title>
-    <style>
-        .debug-btn {
-            background-color: #ffdfdb;
-            border: 1px solid #ffdfdb;
-            color: #000;
-            cursor: pointer;
-            padding: 8px 15px;
-            font-size: 0.9em;
-        }
-        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f5f5f5; }
-        h2 { border-bottom: 2px solid #ccc; padding-bottom: 10px; }
-        .toolbar { margin-bottom: 15px; background: white; padding: 10px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        button { cursor: pointer; padding: 8px 15px; margin-right: 10px; border: 1px solid #ccc; background: #eee; border-radius: 4px; font-size: 14px; }
-        button:hover { background: #ddd; }
-        button.primary { background: #0078d4; color: white; border-color: #005a9e; }
-        button.primary:hover { background: #005a9e; }
-        
-        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ddd; vertical-align: top; }
-        th { background-color: #333; color: white; }
-        tr:hover { background-color: #f1f1f1; }
-        
-        .duplicate-order { color: red; font-weight: bold; }
-        .notes-cell { color: #d32f2f; font-style: italic; }
-        .copy-btn { font-size: 11px; padding: 2px 5px; margin-left: 10px; }
-        .copied { background-color: #4caf50 !important; color: white; }
-        .del-btn { background: #ffcccc; border: 1px solid #ff9999; color: #cc0000; font-weight: bold; padding: 2px 6px; }
-        .del-btn:hover { background: #ff9999; color: white; }
-        
-        .name-link { color: #0078d4; text-decoration: none; font-weight: bold; cursor: pointer; }
-        .name-link:hover { text-decoration: underline; }
-
-        #footer-ver { margin-top: 20px; color: #666; font-size: 12px; }
-    </style>
-</head>
+    <title>Billing Log 1.0.93</title>
+<style>
+    :root { --bg: #121212; --surface: #1e1e1e; --text: #e0e0e0; --border: #333; --accent: #0078d4; --danger: #d93025; --success: #28a745; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; }
+    .toolbar { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); }
+    th, td { border: 1px solid var(--border); padding: 12px; text-align: left; vertical-align: top; }
+    th { background: #252525; color: #aaa; font-size: 11px; text-transform: uppercase; }
+    button { padding: 6px 12px; cursor: pointer; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; }
+    .copy-btn { background: var(--accent); color: white; }
+    .delete-btn { background: var(--danger); color: white; }
+    .export-btn { background: var(--success); color: white; }
+    .import-btn { background: #555; color: white; }
+    .open-btn { background: #444; color: white; }
+    .open-btn:hover { opacity: 0.8; }
+    .debug-area { margin-top: 8px; font-size: 11px; }
+    details { background: #2a2a2a; padding: 5px; border-radius: 4px; border: 1px solid #444; }
+    summary { cursor: pointer; color: #ffca28; font-weight: bold; padding: 2px; }
+    pre { white-space: pre-wrap; word-wrap: break-word; color: #bbb; max-height: 150px; overflow-y: auto; background: #111; padding: 5px; }
+    a { color: #4fc3f7; text-decoration: none; font-weight: bold; }
+    #package-count { font-size: 14px; color: #888; margin-left: auto; padding-right: 10px; }
+</style>
 <body>
-
-    <h2>Order Summary Report</h2>
-
-    <div class="toolbar">
-        <button id="reload-btn">↻ Reload Data</button>
-        <button id="export-btn">⬇ Download CSV (Stamps.com)</button>
-        <button id="email-btn" class="primary">✉ Email Report</button>
-    </div>
-
-    <table id="orderTable">
+<div class="toolbar">
+    <button id="btn-export" class="export-btn">💾 Save Archive</button>
+    <button id="btn-import" class="import-btn">📂 Load Archive</button>
+    <button id="btn-email" class="email-btn" style="background: #0078d4; color: white;">📧 Email Report</button>
+    <button id="btn-clear" class="delete-btn">🗑️ Clear All</button>
+    <span id="package-count">Packages: 0</span>
+    <input type="file" id="file-input" style="display: none;" accept=".txt">
+</div>
+    <table>
         <thead>
             <tr>
                 <th>Order #</th>
-                <th>Item</th>
+                <th>Item / Variation</th>
                 <th>Shipping Address</th>
                 <th>Notes</th>
                 <th>Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            </tbody>
+        <tbody id="report-body"></tbody>
     </table>
-
-    <div id="footer-ver">Order Extractor v1.0.57</div>
-
     <script src="report.js"></script>
-
 </body>
 </html>

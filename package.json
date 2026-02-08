@@ -1,0 +1,10 @@
+{
+  "name": "order-extractor",
+  "version": "1.0.84",
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "eslint-visual-formatter": "^1.0.0"
+  }
+}

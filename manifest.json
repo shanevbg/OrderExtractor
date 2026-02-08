@@ -1,8 +1,8 @@
-{
+﻿{
   "manifest_version": 2,
   "name": "Order Extractor",
   "description": "Extracts order details and opens a report tab.",
-  "version": "1.0.57",
+  "version": "1.0.93",
   "author": "Shane Vincent",
   "permissions": [
     "menus",
@@ -11,8 +11,7 @@
     "tabs",
     "clipboardWrite",
     "storage",
-    "compose",
-    "messageDisplay"
+    "compose"
   ],
   "background": {
     "scripts": ["background.js"]
