@@ -1,0 +1,1300 @@
+Return-Path: <bmntherapy@gmail.com>
+X-Original-To: shipping@bionootropics.com
+Delivered-To: x25201104@pdx1-sub0-mail-mx205.dreamhost.com
+Received: from postfix-inbound-5.inbound.mailchannels.net (inbound-egress-11.mailchannels.net [23.83.208.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by pdx1-sub0-mail-mx205.dreamhost.com (Postfix) with ESMTPS id 4f7vwr1SKMz7Yxv
+	for <shipping@bionootropics.com>; Sat,  7 Feb 2026 20:29:16 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=pass;
+	t=1770524955;
+	b=R8pVnzhzY6nWLo0Z4bJe4aSNWyX0ZSvkuDXaOttKxko6dKyFQpctv3hfaYDNhTKW0qT66W
+	t2y72KbOuVbky9h7popEqqywZu9opzK7Kzae2wQniwYKbfEpSRMr6mqHddzT4su4sWwq14
+	0TD7tYygxuR0U2/2LKHXn66O6ZMewkt3hcFC7dYxq2ueotMWM5GceeAqLPIOlwpuwiqBLB
+	31+2T13aXUWts7+Yr/DCPP7r5spTXefWqUYkr1644OgryZW2eEeFbj77tHr6Sd6LdF/gIX
+	FTWD5ovg+LOeOLOQGObhCT14/sEc9rZLWxqXUm7798lemsplN3HnGhpAcXJaxA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1770524955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Zi/Vc3WtU5fYHxy5IvBHeqWMtHDwALnGdlpW9wjsCa8=;
+	b=5SqmhfY5nx69LAqVJm+BRFUNDUPIiwBf00fuUu1t8E0y2W4tqIydlXPiHKwjVI4hWFkdKd
+	lu+iLs/3A9q51gY4FbX0caqGfgBHDi8HlW/xnpQ9EwmESkUoO2rrJh6qGJ6QEv8lZ/BdRg
+	KyiRtkD15CaCUvzxLvBQrXdavymqC8QXdeu+CMPqnnmsgZ/B9H4QlxRlkfQcuyJCx+1Vf4
+	LpAkFId/ncLzN8lkVSCVBlucIKK2l+07HNmoNlP+ynchfYlc9WfEP98XKHye8aC3cXF8eP
+	0OV/orxzzzVNdKiTlIp9Hj0O4BXS+H9CeCXNYPopbqKyhW+TFdOPT/pSUVW9eQ==
+ARC-Authentication-Results: i=2;
+	inbound-rspamd-56bdf96877-dncsf;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+X-Message-ID: WRubsp58Js7JPS8jJh5U6ALT
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com
+ [209.85.218.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256)
+	by 100.96.84.97 (trex/7.1.3);
+	Sun, 08 Feb 2026 04:29:16 +0000
+Authentication-Results: inbound.mailchannels.net;
+ spf=pass smtp.mailfrom=bmntherapy@gmail.com;
+ dkim=pass header.d=gmail.com;
+ dmarc=pass (policy=none; pct=100; status=pass);
+ arc=pass (i=1)
+Received-SPF: pass (dmarc-service-79fbc8656b-bxdrc: domain of gmail.com
+ designates 209.85.218.54 as permitted sender) client-ip=209.85.218.54;
+ envelope-from=bmntherapy@gmail.com; helo=mail-ej1-f54.google.com;
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8e9c8ada38so558869766b.0
+        for <shipping@bionootropics.com>; Sat, 07 Feb 2026 20:29:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770524953; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Uqb+a0g0vt41gyeKYHQt4tp0hBFuy9PVMv7d3PZ2ndRLAGioYYAYehWsT24Frgq4a4
+         DlmldBvjbpHS5RLOBAfe1GyU9YLGJhhgKeHZEWTKgLo2eNeLAQQBh+8PMPynZSefXcS5
+         KqqOpQkqZguBwrI8Dg3Vz43b0b05NvkfePeaxddKkPBmw3aelzQhuZRiMhCZtt9lbxzR
+         Hwmt9vLz7CwQbdR7u/7XJzptd+fddESXPKeU0I4VXF9cwZRydUIJUma/ZmPbzKka1lDz
+         luLLn6AVDEAYBUtxMjv9e+8xG71WyjmX0Nre8uygIf0+MEkO3c98lTuY4PEd0WS7z1Rz
+         7WDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=Zi/Vc3WtU5fYHxy5IvBHeqWMtHDwALnGdlpW9wjsCa8=;
+        fh=q3khIUYh9JjwRY0pnTg7kK50SmiDTfb11hCJSOZbsiU=;
+        b=dByEJ1ZQ4EDjgLN2ciGmtSZ3j9t6/104HNUcVm124CAGVfVQuuo6T48XRQM7tc1AQV
+         dokDT3HImyuUyRjdBUKazxk7FTTbta264D+jRii8bfm4E5+PB5I7Augm1eoQ4D9Jt0P9
+         4U+MK58U/wzbEDOuSNdSAboJYQu1ldxrTyVt73/8yLq5rUIyAPygBTbXn9/5dugUplZe
+         MGFnIapvpBMKY/hrRhyZoiMvC40IAHIqg32N45dGlh5ltQh9QUT44gQG2b3OR02Ms581
+         K9SCAJJS1ayTYqigx9kxpdt8GhoQHxbi2wT4aChvgSjvKEepjRomYSkAeIQwC6oaSI5I
+         tDGw==;
+        darn=bionootropics.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770524953; x=1771129753; darn=bionootropics.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Zi/Vc3WtU5fYHxy5IvBHeqWMtHDwALnGdlpW9wjsCa8=;
+        b=TEy0OkW6XDpVYhw5eM72KUvIJn2e5cHbYG74xm/HZbpLaaNtf/3ExzFWe5M/WNpG61
+         G8mqBxMCSG4v/rdLyNnw0NuHTPw/sCu/VMHARI0JoJt7We3bGizTIk40Q0VX4ZBvQg3X
+         qycZXYZCjW89+y0BHP+TzXSBCS8RKLCBMEDl30rQMQkqd6ujVkGWc23o7G82fCWDuH6J
+         hX5JZKpnOtwweMK8x80pYmVjOwgSTT3EQP/etAhhHaK2/CNoC4Ge/HC3Twv0dYWWgBXQ
+         sV16putWpC27Z7C0MuC/p6QCKbpz76UIZynj+EmvyjMUaUgLURUhtt6/CdwmtQep7ESs
+         bYGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770524953; x=1771129753;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zi/Vc3WtU5fYHxy5IvBHeqWMtHDwALnGdlpW9wjsCa8=;
+        b=RDPcOqmgTuUqQg1Kqvo/2LXSqGNRScs2I7bOcnz4FkYpWBVXeyIsvT5J9L8TCeY1uv
+         gdGUknUXqeqwVtbGkTQTIni/sno/CpTlZcX+XPV+8Y2BmHebjY8kWCqPg4/MmJg07dkm
+         HX//2D6aPvNzt9aB5dkc3Gv4WBOeZTAYqt3zYZ5QjSFxSkCncbMUZIBfmtC5OxGzDNn4
+         B/9QoxzqpHhOsXHN8rvs1aOEML7rtbeihUIvzdeMdpq9bizhAg/ACiTYqGVHPUISnGc6
+         iam6vvp4Dw8/7nPzaYpfinX1k0LminrHbihgyOij3zvO2LRLazUWOpbkYfJ6ildJXLIy
+         ARDg==
+X-Gm-Message-State: AOJu0YwEIVRrEjiO+skCZHkh8iISqYfpADNWgLJ9MCvedsKFALK+uKYs
+	LNqaZNpsK4k5P5iUQOE4YbRCC0ydQ+EAxNIqJJwjW2hM3m/mpls5dwrVyryKzydd4JJHK9nhilc
+	KIMyFGjUc3RchaPNOkxXyolGRW0xX3s0U9gc/
+X-Gm-Gg: AZuq6aIUOq+Zjp7vTn2sUgOib/MiHukzvCCH+GqVQlDE4KPDYHauZgheWIfxgenmEyl
+	dZU7ZVPPp49rHtHXoW6vnKaIrdM9XoMKeXgEBVb+EEsir47830gB5ggc+k5SC4wssxae8zOKrli
+	S+qNVk/w98rXwpGFPgjFztgXK2QBNr7dTN0h9NYvpF6Fy3bNZuhZmDPoQuh19jLjtpqQc2Dtva7
+	Ora7rxGc5d2eVHfpGTl4+99s4QNhUPPvjGfzBBQOcufgX0QBE4PUZNpiDX6Hi20vmgYAUaCtQ8H
+	2kPmsk7mb9SIL4ialCSEE7sAXQ==
+X-Received: by 2002:a17:906:c154:b0:b87:6953:9d5e with SMTP id
+ a640c23a62f3a-b8edf3411bdmr410487166b.33.1770524953273; Sat, 07 Feb 2026
+ 20:29:13 -0800 (PST)
+MIME-Version: 1.0
+References: <0A2EC4E8-C36CD159FE8-019C24F3DCDA-0000000000A0C355@starship>
+In-Reply-To: <0A2EC4E8-C36CD159FE8-019C24F3DCDA-0000000000A0C355@starship>
+From: Peptide Amino <bmntherapy@gmail.com>
+Date: Sun, 8 Feb 2026 06:29:01 +0200
+X-Gm-Features: AZwV_Qjn4ggz3MXaJqy7WcgeQEVLdOvv_8tYaUnZGU5wFzNW7vWEgNRr8ckxOTU
+Message-ID: <CAPB1BP+erUvTqarP3nvMwcV2unPdbigT_x2BmMz5Tv-Y8zhczg@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_You_made_the_sale_for_Nephro_3_Plus_Peptide_Com?=
+	=?UTF-8?Q?plex_=E2=80=93_with_Pielotax=2C_Chitomur_=26_Vladonix?=
+To: Shipping <shipping@bionootropics.com>
+Content-Type: multipart/alternative; boundary="000000000000e7e76a064a487691"
+
+--000000000000e7e76a064a487691
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+This has to ship Wright a way.
+
+---------- Forwarded message ---------
+From: eBay <ebay@ebay.com>
+Date: Fri, Feb 6, 2026, 4:54 AM
+Subject: You made the sale for Nephro 3 Plus Peptide Complex =E2=80=93 with
+Pielotax, Chitomur & Vladonix
+To: <bmntherapy@gmail.com>
+
+
+Next, pack it up and ship it out.
+=CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=
+=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=
+=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=
+=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=
+=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C
+=CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=
+=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=
+=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=
+=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=
+=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C
+=CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=
+=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=
+=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=
+=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=
+=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C
+=CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=
+=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=
+=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=
+=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=
+=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C
+=CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C =CD=8F=E2=80=8C
+
+[image: Shop eBay]
+<https://www.ebay.com/ulk/start/shop?mkevt=3D1&mkpid=3D0&emsid=3De12025.m14=
+6224.l132112&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&=
+bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+
+Great news=E2=80=94your item has sold!
+Get a shipping label or QR code
+<https://www.ebay.com/lbr/go?t=3D05-14207-72474&mkevt=3D1&mkpid=3D0&emsid=
+=3De12025.m144877.l148045&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd=
+49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D=
+12025&mkevt=3D1&mkpid=3D0&emsid=3De12025.m144877.l148045&mkcid=3D7&ch=3Dosg=
+ood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&=
+crd=3D20260205195432&segname=3D12025>
+Your buyer's shipping details:
+
+Matt Robinson
+18049 White Fawn Cir
+<https://www.google.com/maps/search/18049+White+Fawn+Cir?entry=3Dgmail&sour=
+ce=3Dg>
+College Sta, TX 77845-7144
+United States
+Ship by:
+
+Feb 06, 2026
+
+Your buyer has paid and now it=E2=80=99s time to get a shipping label.
+
+*Ship your item with a tracked service,* required in the event of a claim
+or dispute, within 1 day (the handling time you promised in your listing).
+Most transactions are covered by seller protections, but this only applies
+if you use a tracked service.
+
+Unless your funds are on hold, they'll be available for payout within two
+business days of order confirmation. Your funds will be sent to you on your
+next scheduled payout date. You can also enable and request your available
+funds any time via on-demand payouts
+<https://www.ebay.com/sh/fin?mkevt=3D1&mkpid=3D0&emsid=3De12025.m144700.l18=
+1578&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D437=
+66541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>.
+
+
+Questions? Learn more
+<https://www.ebay.com/help/selling/getting-paid/getting-paid-items-youve-so=
+ld?id=3D4814&st=3D7&po=3D2&uci=3D20&ri=3D27533251012&mkevt=3D1&mkpid=3D0&em=
+sid=3De12025.m144700.l181579&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b=
+1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=
+=3D12025#section1>
+about getting paid for items you=E2=80=99ve sold.
+[image: Nephro 3 Plus Peptide Complex =E2=80=93 with Pielotax,...]
+<https://www.ebay.com/mesh/ord/details?orderid=3D05-14207-72474&mkevt=3D1&m=
+kpid=3D0&emsid=3De12025.m144667.l147874&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad7=
+92fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195=
+432&segname=3D12025&mkevt=3D1&mkpid=3D0&emsid=3De12025.m144674.l147876&mkci=
+d=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&=
+osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+Nephro 3 Plus Peptide Complex =E2=80=93 with Pielotax,...
+<https://www.ebay.com/mesh/ord/details?orderid=3D05-14207-72474&mkevt=3D1&m=
+kpid=3D0&emsid=3De12025.m144667.l147874&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad7=
+92fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195=
+432&segname=3D12025&mkevt=3D1&mkpid=3D0&emsid=3De12025.m144674.l147876&mkci=
+d=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&=
+osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+Sold:
+
+$215.00
+Shipping:
+
+$25.00
+Order:
+
+05-14207-72474
+Date sold:
+
+Feb 05, 2026 18:54
+Capsule Count
+
+60 Caps
+Buyer:
+
+gearhead_matt
+<https://www.ebay.com/ulk/usr/gearhead_matt?mkevt=3D1&mkpid=3D0&emsid=3De12=
+025.m144667.l147875&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c=
+3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025&=
+mkevt=3D1&mkpid=3D0&emsid=3De12025.m144674.l147877&mkcid=3D7&ch=3Dosgood&eu=
+id=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D=
+20260205195432&segname=3D12025>
+[image: Package icon]
+The right way to package
+
+Make sure your item is clearly labeled and packaged securely for its
+journey to the recipient.
+[image: Shipping labels icon]
+Get labels and send your package
+
+eBay's labels
+<https://www.ebay.com/lbr/go?t=3D05-14207-72474&mkevt=3D1&mkpid=3D0&emsid=
+=3De12025.m144675.l147878&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd=
+49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D=
+12025&mkevt=3D1&mkpid=3D0&emsid=3De12025.m144675.l147878&mkcid=3D7&ch=3Dosg=
+ood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&=
+crd=3D20260205195432&segname=3D12025>
+pre-populate the recipient=E2=80=99s address and automatically upload your =
+tracking
+number.
+
+Is this email helpful?
+<https://www.ebay.com/srv/survey/a/selling.crm.seller_txn?_0=3D5&ctx_templa=
+te=3DPU&ctx_seg=3DGeneric&mkevt=3D1&mkpid=3D0&emsid=3De12025.m165513.l19177=
+8&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D437665=
+41939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+<https://www.ebay.com/srv/survey/a/selling.crm.seller_txn?_0=3D1&ctx_templa=
+te=3DPU&ctx_seg=3DGeneric&mkevt=3D1&mkpid=3D0&emsid=3De12025.m165513.l19177=
+9&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D437665=
+41939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+[image: eBay Logo]
+<https://www.ebay.com/ulk/start/shop?mkevt=3D1&mkpid=3D0&emsid=3De12025.m18=
+52.l149990&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=
+=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025&mkevt=3D1=
+&mkpid=3D0&emsid=3De12025.m1852.l149990&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad7=
+92fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195=
+432&segname=3D12025>
+[image: instagram]
+<https://www.ebayadservices.com/marketingtracking/v1/redirect?mpre=3Dhttps%=
+3A%2F%2Fwww.instagram.com%2Febay%2F&mkevt=3D1&mkpid=3D0&emsid=3De12025.m521=
+9.l9644&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D=
+43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+         [image: facebook]
+<https://www.ebayadservices.com/marketingtracking/v1/redirect?mpre=3Dhttps%=
+3A%2F%2Fwww.facebook.com%2Febay&mkevt=3D1&mkpid=3D0&emsid=3De12025.m5219.l9=
+641&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D4376=
+6541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+         [image: X]
+<https://www.ebayadservices.com/marketingtracking/v1/redirect?mpre=3Dhttps%=
+3A%2F%2Fx.com%2Febay&mkevt=3D1&mkpid=3D0&emsid=3De12025.m5219.l9642&mkcid=
+=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&o=
+sub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>
+[image: App Store]
+<https://www.ebay.com/ulk/start/shop?ul_alt=3Dstore&mkevt=3D1&mkpid=3D0&ems=
+id=3De12025.m1852.l3872&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49=
+569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12=
+025>
+  [image: Play Store]
+<https://www.ebay.com/ulk/start/shop?ul_alt=3Dstore&mkevt=3D1&mkpid=3D0&ems=
+id=3De12025.m1852.l3871&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49=
+569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12=
+025>
+
+Email Reference ID: [#cd6ad792fde14ef9b1cd49569c3385d5]
+
+Please see our Payments Terms of Use
+<https://pages.ebay.com/payment/2.0/terms.html?mkevt=3D1&mkpid=3D0&emsid=3D=
+e12025.m1852.l44769&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c=
+3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>=
+.
+
+
+Update your email preferences
+<https://www.ebay.com/settings/emailPrefs?mkevt=3D1&mkpid=3D0&emsid=3De1202=
+5.m1852.l1141&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5=
+&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>,
+unsubscribe
+<https://commspreferences.ebay.com/commsprefs?EmailUnsubscribe&emailType=3D=
+12025&mkevt=3D1&mkpid=3D0&emsid=3De12025.m1852.l1142&mkcid=3D7&ch=3Dosgood&=
+euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=
+=3D20260205195432&segname=3D12025>
+or learn about account protection
+<https://pages.ebay.com/help/account/protecting-account.html?mkevt=3D1&mkpi=
+d=3D0&emsid=3De12025.m1852.l3167&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14=
+ef9b1cd49569c3385d5&bu=3D43766541939&osub=3D-1%7E1&crd=3D20260205195432&seg=
+name=3D12025>
+.
+If you have a question, contact us
+<https://www.ebay.com/help/home?mkevt=3D1&mkpid=3D0&emsid=3De12025.m1852.l6=
+369&mkcid=3D7&ch=3Dosgood&euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&bu=3D4376=
+6541939&osub=3D-1%7E1&crd=3D20260205195432&segname=3D12025>.
+
+
+eBay C=E2=80=8Commerce I=E2=80=8Cnc., 2=E2=80=8C065 H
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Camilton A
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Cve., S
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Can J
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Cose, C
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8CA 9
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8C5125, U
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Cnited S
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+=E2=80=8Ctates
+<https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+=
+9+5125,+U+nited+S+tates?entry=3Dgmail&source=3Dg>
+
+=C2=A9 1995-2026 eBay Inc. or its affiliates
+
+--000000000000e7e76a064a487691
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto">This has to ship Wright a way.</div><br><div class=3D"gma=
+il_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">-----=
+----- Forwarded message ---------<br>From: <strong class=3D"gmail_sendernam=
+e" dir=3D"auto">eBay</strong> <span dir=3D"auto">&lt;<a href=3D"mailto:ebay=
+@ebay.com">ebay@ebay.com</a>&gt;</span><br>Date: Fri, Feb 6, 2026, 4:54 AM<=
+br>Subject: You made the sale for Nephro 3 Plus Peptide Complex =E2=80=93 w=
+ith Pielotax, Chitomur &amp; Vladonix<br>To:  &lt;<a href=3D"mailto:bmnther=
+apy@gmail.com">bmntherapy@gmail.com</a>&gt;<br></div><br><br><u></u>
+
+
+ =20
+   =20
+ =20
+  <div>
+   =20
+<div role=3D"article" aria-label=3D"eBay Newsletter" lang=3D"en-US" dir=3D"=
+ltr" style=3D"font-family:&#39;Market Sans&#39;,Helvetica,Arial,sans-serif"=
+ class=3D"m_-1592853444593060192gwfw">
+
+<div style=3D"max-width:600px;margin:0 auto">
+<div style=3D"display:none">
+Next, pack it up and ship it out.
+<div style=3D"display:none">
+=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=
+=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=
+=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=
+=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=
+=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=
+=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=
+=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=
+=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=
+=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=
+=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=
+=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=
+=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=
+=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=
+=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=
+=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=
+=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=
+=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=
+=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=
+=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=
+=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=
+=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=
+=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=
+=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=
+=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=
+=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=
+=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=
+=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0=CD=8F=E2=80=8C=C2=A0
+</div>
+</div>
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#f7f7f7;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+<table role=3D"presentation" width=3D"100%" cellspacing=3D"0" cellpadding=
+=3D"0" border=3D"0">
+<tr>
+<td align=3D"left" width=3D"79" valign=3D"middle" style=3D"padding:24px 16p=
+x 0px 16px">
+<a href=3D"https://www.ebay.com/ulk/start/shop?mkevt=3D1&amp;mkpid=3D0&amp;=
+emsid=3De12025.m146224.l132112&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6=
+ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;cr=
+d=3D20260205195432&amp;segname=3D12025" style=3D"color:#9c9c9c;text-decorat=
+ion:none;display:block" target=3D"_blank" rel=3D"noreferrer">
+<span>
+<img src=3D"https://secureir.ebaystatic.com/cr/mscdn/2da6a871d3ba2f07594cec=
+7f55bcf6ed/Logo_Legacy_2x.png" alt=3D"Shop eBay" width=3D"79" style=3D"disp=
+lay:block">
+</span>
+</a>
+<img src=3D"https://www.ebayadservices.com/marketingtracking/v1/impression?=
+mkevt=3D4&amp;siteId=3D0&amp;mkpid=3D0&amp;emsid=3De12025&amp;mkcid=3D7&amp=
+;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D437665419=
+39&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" alt=3D""=
+ aria-hidden=3D"true" role=3D"presentation" style=3D"border:0;height:1px;di=
+splay:block;line-height:1px;float:left" width=3D"1" height=3D"1" border=3D"=
+0">
+</td>
+<td>=C2=A0</td>
+</tr>
+</table>
+
+</div>
+</div>
+
+
+
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#f7f7f7;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+
+<div style=3D"margin:32px 16px 64px 16px">
+
+<h1 style=3D"margin:24px 0px 0px 0px;line-height:40px;font-size:30px;color:=
+#191919">
+Great news=E2=80=94your item has sold!
+</h1>
+<div align=3D"left" style=3D"margin:24px 0px 0px 0px;line-height:0" class=
+=3D"m_-1592853444593060192mb0">
+<table role=3D"presentation" cellspacing=3D"0" cellpadding=3D"0" border=3D"=
+0" style=3D"display:inline-table">
+<tr>
+<td height=3D"21" style=3D"font-size:1px;line-height:1px;padding:0" align=
+=3D"left">
+<a class=3D"m_-1592853444593060192button" href=3D"https://www.ebay.com/lbr/=
+go?t=3D05-14207-72474&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m14487=
+7.l148045&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd4956=
+9c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&am=
+p;segname=3D12025&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144877.l1=
+48045&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c33=
+85d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;se=
+gname=3D12025" rel=3D"noopener noreferrer" style=3D"background-color:#0968f=
+6;font-size:14px;line-height:20px;font-family:&#39;Market Sans&#39;,Helveti=
+ca,Arial,sans-serif;font-weight:700;text-decoration:none;padding:9px 24px 9=
+px 24px;color:#ffffff;border:1px solid #0968f6;border-radius:24px;display:i=
+nline-block" target=3D"_blank">
+
+<span>
+Get a shipping label or QR code
+</span>
+
+</a>
+</td>
+</tr>
+</table>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+<div class=3D"m_-1592853444593060192mb32" style=3D"margin:0 0 24px 0;font-s=
+ize:0px;line-height:0px;height:0">=E2=80=8A</div>
+
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#ffffff;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+<div style=3D"margin:0px 0px 0px 0px">
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#f7f7f7;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+<div style=3D"margin:24px 16px 0px 16px">
+
+<div style=3D"border-radius:16px" class=3D"m_-1592853444593060192row">
+
+
+
+
+
+<div style=3D"display:table;width:100%;vertical-align:top!important" class=
+=3D"m_-1592853444593060192col m_-1592853444593060192col-276px">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+<h3 style=3D"margin:0 0 2px 0;line-height:20px;font-size:14px;color:#414141=
+;font-weight:400">
+Your buyer&#39;s shipping details:
+</h3>
+<p style=3D"margin:0 0 24px 0;line-height:20px;font-size:14px;color:#191919=
+;font-weight:normal;text-decoration:none">
+Matt Robinson<br>
+<a href=3D"https://www.google.com/maps/search/18049+White+Fawn+Cir?entry=3D=
+gmail&amp;source=3Dg">18049 White Fawn Cir</a> <br>
+College Sta, TX
+77845-7144<br>
+United States
+</p>
+
+</div>
+</div>
+
+
+
+
+<div style=3D"display:none" class=3D"m_-1592853444593060192col m_-159285344=
+4593060192gutter-16px">
+
+</div>
+
+
+
+
+<div style=3D"display:table;width:100%;vertical-align:top!important" class=
+=3D"m_-1592853444593060192col m_-1592853444593060192col-276px">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+<h3 style=3D"margin:0 0 2px 0;line-height:20px;font-size:14px;color:#414141=
+;font-weight:400">
+Ship by:
+</h3>
+<p style=3D"margin:0 0 24px 0;line-height:20px;font-size:14px;color:#191919=
+;font-weight:bold;text-decoration:none">
+Feb 06, 2026
+</p>
+
+</div>
+</div>
+
+
+
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div style=3D"line-height:24px;height:24px" class=3D"m_-1592853444593060192=
+vspace-32"> </div>
+</div>
+
+</div>
+</div>
+
+
+
+
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;margin:0 auto;backgr=
+ound-color:#ffffff">
+<div style=3D"display:table-cell">
+
+
+<div style=3D"margin:0px 16px 16px 16px">
+
+<div style=3D"margin:0 0 24px 0">
+<p style=3D"margin:0 0 16px 0;line-height:20px;font-size:14px;color:#707070=
+;margin-bottom:0">
+Your buyer has paid and now it=E2=80=99s time to get a shipping label.
+</p>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;margin:0 auto;backgr=
+ound-color:#ffffff">
+<div style=3D"display:table-cell">
+
+
+<div style=3D"margin:0px 16px 16px 16px">
+
+<div style=3D"margin:0 0 24px 0">
+<p style=3D"margin:0 0 16px 0;line-height:20px;font-size:14px;color:#707070=
+;margin-bottom:0">
+<b>Ship your item with a tracked service,</b> required in the event of a cl=
+aim or dispute, within 1 day (the handling time you promised in your listin=
+g). Most transactions are covered by seller protections, but this only appl=
+ies if you use a tracked service.
+</p>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;margin:0 auto;backgr=
+ound-color:#ffffff">
+<div style=3D"display:table-cell">
+
+
+<div style=3D"margin:0px 16px 16px 16px">
+
+<div style=3D"margin:0 0 24px 0">
+<p style=3D"margin:0 0 16px 0;line-height:20px;font-size:14px;color:#707070=
+">
+Unless your funds are on hold, they&#39;ll be available for payout within t=
+wo business days of order confirmation. Your funds will be sent to you on y=
+our next scheduled payout date. You can also enable and request your availa=
+ble funds any time via <a href=3D"https://www.ebay.com/sh/fin?mkevt=3D1&amp=
+;mkpid=3D0&amp;emsid=3De12025.m144700.l181578&amp;mkcid=3D7&amp;ch=3Dosgood=
+&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=
+=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" style=3D"text-decor=
+ation:underline!important;color:inherit!important" target=3D"_blank" rel=3D=
+"noreferrer"><span>on-demand payouts</span></a>.
+</p>
+<p style=3D"margin:0 0 16px 0;line-height:20px;font-size:14px;color:#707070=
+;margin-bottom:0">
+Questions? <a href=3D"https://www.ebay.com/help/selling/getting-paid/gettin=
+g-paid-items-youve-sold?id=3D4814&amp;st=3D7&amp;po=3D2&amp;uci=3D20&amp;ri=
+=3D27533251012&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144700.l1815=
+79&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d=
+5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segna=
+me=3D12025#section1" style=3D"text-decoration:underline!important;color:inh=
+erit!important" target=3D"_blank" rel=3D"noreferrer"><span>Learn more</span=
+></a> about getting paid for items you=E2=80=99ve sold.
+</p>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#ffffff;m=
+argin:0 auto 24px" class=3D"m_-1592853444593060192mb0">
+<div style=3D"display:table-cell">
+
+
+<div style=3D"margin:0 16px 0 16px" class=3D"m_-1592853444593060192mb32">
+
+
+<div style=3D"border-radius:16px" class=3D"m_-1592853444593060192row">
+
+
+
+
+
+<div style=3D"display:table;width:43.657%;float:left;vertical-align:top!imp=
+ortant" class=3D"m_-1592853444593060192col m_-1592853444593060192col-183px =
+m_-1592853444593060192floatnone">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+<div style=3D"margin:0 0 8px 0;padding:0 8px 0 0" class=3D"m_-1592853444593=
+060192px0">
+<a href=3D"https://www.ebay.com/mesh/ord/details?orderid=3D05-14207-72474&a=
+mp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144667.l147874&amp;mkcid=3D7=
+&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766=
+541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025&amp;m=
+kevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144674.l147876&amp;mkcid=3D7&amp=
+;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D437665419=
+39&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" rel=3D"n=
+oopener noreferrer" style=3D"font-size:14px;line-height:20px;font-family:&#=
+39;Market Sans&#39;,Helvetica,Arial,sans-serif;font-weight:bold;text-decora=
+tion:none;display:block" target=3D"_blank">
+<img width=3D"183" style=3D"width:100%;line-height:20px;font-size:14px;colo=
+r:#171717;display:block;display:block;border-radius:16px;background:#f7f7f7=
+" src=3D"https://svcs.ebay.com/imageser/v1/image/render?placement-type=3Dre=
+nder&amp;tag=3De39b85b8-e89a-4702-a049-1d8b08c9946b&amp;imgWidth=3D276&amp;=
+imgHeight=3D276&amp;length=3D276&amp;imageUrl=3Dhttps%3A%2F%2Fi.ebayimg.com=
+%2F00%2Fs%2FODUwWDEyMTU%3D%2Fz%2FfdcAAeSwlb1pXtgb%2F%24_57.PNG%3Fset_id%3D8=
+80000500F&amp;background=3Dtransparent" alt=3D"Nephro 3 Plus Peptide Comple=
+x =E2=80=93 with Pielotax,...">
+</a>
+</div>
+
+</div>
+</div>
+
+
+
+
+<div style=3D"display:none" class=3D"m_-1592853444593060192col m_-159285344=
+4593060192gutter-16px">
+
+</div>
+
+
+
+
+<div style=3D"display:table;width:56.343%;float:left;vertical-align:top!imp=
+ortant" class=3D"m_-1592853444593060192col m_-1592853444593060192col-369px"=
+>
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+<a href=3D"https://www.ebay.com/mesh/ord/details?orderid=3D05-14207-72474&a=
+mp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144667.l147874&amp;mkcid=3D7=
+&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766=
+541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025&amp;m=
+kevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144674.l147876&amp;mkcid=3D7&amp=
+;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D437665419=
+39&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" rel=3D"n=
+oopener noreferrer" style=3D"display:inline-block;color:#0968f6;font-weight=
+:normal!important;text-decoration:underline!important;font-style:normal!imp=
+ortant" target=3D"_blank">
+<span>
+<h3 style=3D"margin:2px 0 4px 0;line-height:22px;font-size:14px;color:#0968=
+f6;font-weight:normal!important;text-decoration:underline!important;font-st=
+yle:normal!important" class=3D"m_-1592853444593060192Medium">
+Nephro 3 Plus Peptide Complex =E2=80=93 with Pielotax,...
+</h3>
+</span>
+</a>
+
+</div>
+</div>
+
+
+<div style=3D"display:table;width:100%;float:left;border-radius:16px;vertic=
+al-align:top!important" class=3D"m_-1592853444593060192show m_-159285344459=
+3060192col-369px">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+<div style=3D"margin:8px 0 16px 0">
+<table width=3D"100%" role=3D"presentation" cellspacing=3D"0" cellpadding=
+=3D"0" border=3D"0">
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-bottom:8px;padding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Sold:
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom;padding-bottom:8px" valig=
+n=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:bold">
+<span class=3D"m_-1592853444593060192blueFix">$215.00</span>
+</p>
+</td>
+</tr>
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-bottom:8px;padding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Shipping:
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom;padding-bottom:8px" valig=
+n=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:bold">
+<span class=3D"m_-1592853444593060192blueFix">$25.00</span>
+</p>
+</td>
+</tr>
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-bottom:8px;padding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Order:
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom;padding-bottom:8px" valig=
+n=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:normal">
+<span class=3D"m_-1592853444593060192blueFix">05-14207-72474</span>
+</p>
+</td>
+</tr>
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-bottom:8px;padding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Date sold:
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom;padding-bottom:8px" valig=
+n=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:normal">
+<span class=3D"m_-1592853444593060192blueFix">Feb 05, 2026 18:54</span>
+</p>
+</td>
+</tr>
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-bottom:8px;padding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Capsule Count
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom;padding-bottom:8px" valig=
+n=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:normal">
+<span class=3D"m_-1592853444593060192blueFix">60 Caps</span>
+</p>
+</td>
+</tr>
+<tr>
+<td width=3D"140" align=3D"left" style=3D"width:140px;vertical-align:top;pa=
+dding-right:8px" valign=3D"top">
+<h4 style=3D"margin:0;line-height:22px;font-size:14px;color:#707070;font-we=
+ight:400">
+Buyer:
+</h4>
+</td>
+<td align=3D"left" style=3D"vertical-align:bottom" valign=3D"bottom">
+<p style=3D"margin:0;line-height:22px;font-size:14px;color:#191919;font-wei=
+ght:normal;margin-bottom:0">
+<span class=3D"m_-1592853444593060192blueFix"><a href=3D"https://www.ebay.c=
+om/ulk/usr/gearhead_matt?mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144667=
+.l147875&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569=
+c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp=
+;segname=3D12025&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m144674.l14=
+7877&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c338=
+5d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;seg=
+name=3D12025" style=3D"text-decoration:underline!important;color:inherit!im=
+portant" target=3D"_blank" rel=3D"noreferrer"><span>gearhead_matt</span></a=
+></span>
+</p>
+</td>
+</tr>
+</table>
+</div>
+
+</div>
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+=20
+   =20
+    =20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#ffffff;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+<div style=3D"margin:0 16px 24px 16px">
+
+<div style=3D"border-radius:16px" class=3D"m_-1592853444593060192row">
+
+
+
+
+
+<div style=3D"display:table;width:100%;background:#f7f7f7;border-radius:16p=
+x;vertical-align:top!important" class=3D"m_-1592853444593060192col m_-15928=
+53444593060192col-276px">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+
+<div style=3D"margin:24px">
+
+
+<div style=3D"margin:0 0 24px 0">
+<div style=3D"margin:8px 0 14px 8px" class=3D"m_-1592853444593060192mx0">
+<img width=3D"48" style=3D"width:100%;max-width:48px!important;line-height:=
+20px;font-size:14px;color:#191919" src=3D"https://i.ebayimg.com/00/s/NDhYND=
+g=3D/z/bnsAAOSwZp5jgIak/$_57.PNG" alt=3D"Package icon">
+</div>
+</div>
+<h3 style=3D"margin:0 0 8px 0;line-height:28px;font-size:20px;color:#191919=
+">
+The right way to package
+</h3>
+<p style=3D"margin:0 0 0px 0;line-height:20px;font-size:14px;color:#191919"=
+>
+Make sure your item is clearly labeled and packaged securely for its journe=
+y to the recipient.
+</p>
+
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+<div style=3D"display:block;height:16px" class=3D"m_-1592853444593060192col=
+ m_-1592853444593060192gutter-16px">
+
+</div>
+
+
+
+
+<div style=3D"display:table;width:100%;background:#f7f7f7;border-radius:16p=
+x;vertical-align:top!important" class=3D"m_-1592853444593060192col m_-15928=
+53444593060192col-276px">
+<div style=3D"display:table-cell" class=3D"m_-1592853444593060192show">
+
+
+<div style=3D"margin:24px">
+
+
+<div style=3D"margin:0 0 24px 0">
+<div style=3D"margin:8px 0 14px 8px" class=3D"m_-1592853444593060192mx0">
+<img width=3D"48" style=3D"width:100%;max-width:48px!important;line-height:=
+20px;font-size:14px;color:#191919" src=3D"https://i.ebayimg.com/00/s/NDhYND=
+g=3D/z/1yEAAOSwMmtjgIal/$_57.PNG" alt=3D"Shipping labels icon">
+</div>
+</div>
+<h3 style=3D"margin:0 0 8px 0;line-height:28px;font-size:20px;color:#191919=
+">
+Get labels and send your package
+</h3>
+<p style=3D"margin:0 0 0px 0;line-height:20px;font-size:14px;color:#191919"=
+>
+<a href=3D"https://www.ebay.com/lbr/go?t=3D05-14207-72474&amp;mkevt=3D1&amp=
+;mkpid=3D0&amp;emsid=3De12025.m144675.l147878&amp;mkcid=3D7&amp;ch=3Dosgood=
+&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=
+=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025&amp;mkevt=3D1&amp;mk=
+pid=3D0&amp;emsid=3De12025.m144675.l147878&amp;mkcid=3D7&amp;ch=3Dosgood&am=
+p;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-=
+1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" style=3D"text-decoratio=
+n:underline!important;color:inherit!important" target=3D"_blank" rel=3D"nor=
+eferrer"><span>eBay&#39;s labels</span></a> pre-populate the recipient=E2=
+=80=99s address and automatically upload your tracking number.
+</p>
+
+
+</div>
+
+
+</div>
+</div>
+
+
+
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+=20
+   =20
+   =20
+
+
+<div style=3D"display:table;width:100%;max-width:600px;background:#ffffff;m=
+argin:0 auto">
+<div style=3D"display:table-cell">
+
+<div style=3D"margin:0 16px 24px 16px" class=3D"m_-1592853444593060192mb32"=
+>
+
+<div style=3D"margin:0 0 24px 0" class=3D"m_-1592853444593060192mb32">
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" alig=
+n=3D"center" role=3D"presentation">
+<tbody><tr>
+<td height=3D"1" style=3D"font-size:1px;line-height:1px;border-top:1px soli=
+d #e5e5e5" align=3D"center"></td>
+</tr>
+</tbody></table>
+</div>
+
+<p style=3D"margin:0;line-height:24px;font-size:16px;color:#191919;font-wei=
+ght:700">
+<span class=3D"m_-1592853444593060192mb0" style=3D"display:inline-block;mar=
+gin:0 0 4px 0;vertical-align:top">Is this email helpful?</span><span style=
+=3D"margin-right:8px"></span><a href=3D"https://www.ebay.com/srv/survey/a/s=
+elling.crm.seller_txn?_0=3D5&amp;ctx_template=3DPU&amp;ctx_seg=3DGeneric&am=
+p;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m165513.l191778&amp;mkcid=3D7&=
+amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D437665=
+41939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" style=
+=3D"display:inline-block" target=3D"_blank" rel=3D"noreferrer"><img src=3D"=
+https://secureir.ebaystatic.com/cr/mscdn/b364c072549e7b31f13429f7be684458/y=
+esIcon.png" width=3D"24" height=3D"24" alt=3D"" style=3D"display:inline-blo=
+ck;vertical-align:bottom"></a><span style=3D"margin-right:8px"></span><a hr=
+ef=3D"https://www.ebay.com/srv/survey/a/selling.crm.seller_txn?_0=3D1&amp;c=
+tx_template=3DPU&amp;ctx_seg=3DGeneric&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsi=
+d=3De12025.m165513.l191779&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad79=
+2fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D=
+20260205195432&amp;segname=3D12025" style=3D"display:inline-block" target=
+=3D"_blank" rel=3D"noreferrer"><img src=3D"https://secureir.ebaystatic.com/=
+cr/mscdn/fdc194df6b7946cbdd71b7944ee7e92f/noIcon.png" width=3D"24" height=
+=3D"24" alt=3D"" style=3D"display:inline-block;vertical-align:bottom"></a>
+</p>
+</div>
+
+</div>
+</div>
+
+
+
+
+=20
+   =20
+   =20
+
+<div class=3D"m_-1592853444593060192footer" style=3D"max-width:600px;margin=
+:0 auto;background-color:#f7f7f7">
+
+
+<div style=3D"display:table;width:100%">
+
+
+<div style=3D"display:table-cell;width:50%;padding:40px 16px 35px 16px">
+
+<a href=3D"https://www.ebay.com/ulk/start/shop?mkevt=3D1&amp;mkpid=3D0&amp;=
+emsid=3De12025.m1852.l149990&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad=
+792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=
+=3D20260205195432&amp;segname=3D12025&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=
+=3De12025.m1852.l149990&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fd=
+e14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D202=
+60205195432&amp;segname=3D12025" style=3D"display:inline-block" target=3D"_=
+blank" rel=3D"noreferrer"><img src=3D"https://secureir.ebaystatic.com/cr/ms=
+cdn/009a368c51d9e697acc4c9c13f9bc5d6/EBAY-LOGO-YUmcg.png" width=3D"79" heig=
+ht=3D"32" alt=3D"eBay Logo"></a>
+
+</div>
+
+
+
+
+<div style=3D"display:table-cell;width:50%;padding-right:31px" align=3D"rig=
+ht">
+
+<a href=3D"https://www.ebayadservices.com/marketingtracking/v1/redirect?mpr=
+e=3Dhttps%3A%2F%2Fwww.instagram.com%2Febay%2F&amp;mkevt=3D1&amp;mkpid=3D0&a=
+mp;emsid=3De12025.m5219.l9644&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6a=
+d792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=
+=3D20260205195432&amp;segname=3D12025" style=3D"display:inline-block" targe=
+t=3D"_blank" rel=3D"noreferrer"><img src=3D"https://secureir.ebaystatic.com=
+/cr/mscdn/0d78f2625790856d7f6ec35d2e4cbfc6/instagram-qoyCT.png" width=3D"22=
+" height=3D"22" alt=3D"instagram"></a>
+<span style=3D"display:inline-block;width:16px">=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0</span>
+<a href=3D"https://www.ebayadservices.com/marketingtracking/v1/redirect?mpr=
+e=3Dhttps%3A%2F%2Fwww.facebook.com%2Febay&amp;mkevt=3D1&amp;mkpid=3D0&amp;e=
+msid=3De12025.m5219.l9641&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792=
+fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D2=
+0260205195432&amp;segname=3D12025" style=3D"display:inline-block" target=3D=
+"_blank" rel=3D"noreferrer"><img src=3D"https://secureir.ebaystatic.com/cr/=
+mscdn/3dd925153b74fae9863918b7750d0183/facebook-3Zomx.png" width=3D"22" hei=
+ght=3D"22" alt=3D"facebook"></a>
+<span style=3D"display:inline-block;width:16px">=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0</span>
+<a href=3D"https://www.ebayadservices.com/marketingtracking/v1/redirect?mpr=
+e=3Dhttps%3A%2F%2Fx.com%2Febay&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De120=
+25.m5219.l9642&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1c=
+d49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D202602051954=
+32&amp;segname=3D12025" style=3D"display:inline-block" target=3D"_blank" re=
+l=3D"noreferrer"><img src=3D"https://secureir.ebaystatic.com/cr/mscdn/71f38=
+1c19932bec76c1d64c961e12e74/X-icon-lightmode.png" width=3D"22" height=3D"22=
+" alt=3D"X"></a>
+
+</div>
+
+
+</div>
+
+
+
+<div style=3D"display:table;width:100%">
+
+
+<div style=3D"display:table-cell;width:100%;padding:0px 16px 48px 16px">
+
+<a href=3D"https://www.ebay.com/ulk/start/shop?ul_alt=3Dstore&amp;mkevt=3D1=
+&amp;mkpid=3D0&amp;emsid=3De12025.m1852.l3872&amp;mkcid=3D7&amp;ch=3Dosgood=
+&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=
+=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" style=3D"display:in=
+line-block" target=3D"_blank" rel=3D"noreferrer"><img src=3D"https://secure=
+ir.ebaystatic.com/cr/mscdn/05f55229ddf28e288c1b24f2b077a224/apple-store-gvK=
+sT.png" width=3D"135" height=3D"40" alt=3D"App Store"></a>
+<span width=3D"16">=C2=A0</span>
+<a href=3D"https://www.ebay.com/ulk/start/shop?ul_alt=3Dstore&amp;mkevt=3D1=
+&amp;mkpid=3D0&amp;emsid=3De12025.m1852.l3871&amp;mkcid=3D7&amp;ch=3Dosgood=
+&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=
+=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" style=3D"display:in=
+line-block" target=3D"_blank" rel=3D"noreferrer"><img src=3D"https://secure=
+ir.ebaystatic.com/cr/mscdn/cf962b9d55eebd75dcc4496a7b45f7e5/google-play-sto=
+re-SSe2S.png" width=3D"135" height=3D"40" alt=3D"Play Store"></a>
+<br>
+<p style=3D"font-size:12px;line-height:22px;color:#414141;font-weight:400;m=
+argin-top:24px;display:inline-block;width:100%">
+Email Reference ID: [#cd6ad792fde14ef9b1cd49569c3385d5]
+</p>
+<p style=3D"font-size:12px;line-height:22px;color:#414141;font-weight:400;m=
+argin-top:8px;display:inline-block;width:100%">
+Please see our <a href=3D"https://pages.ebay.com/payment/2.0/terms.html?mke=
+vt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m1852.l44769&amp;mkcid=3D7&amp;ch=
+=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&=
+amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" id=3D"m_-15=
+92853444593060192footerPaymentsTermsLink" style=3D"color:#111820;text-decor=
+ation:underline!important" target=3D"_blank" rel=3D"noreferrer">Payments Te=
+rms of Use</a>.
+</p>
+<p style=3D"font-size:12px;line-height:22px;color:#414141;font-weight:400;m=
+argin-top:8px;display:inline-block;width:100%">
+Update your <a href=3D"https://www.ebay.com/settings/emailPrefs?mkevt=3D1&a=
+mp;mkpid=3D0&amp;emsid=3De12025.m1852.l1141&amp;mkcid=3D7&amp;ch=3Dosgood&a=
+mp;euid=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D=
+-1%7E1&amp;crd=3D20260205195432&amp;segname=3D12025" id=3D"m_-1592853444593=
+060192footerEmailPreferencesLink" style=3D"color:#111820;text-decoration:un=
+derline!important" target=3D"_blank" rel=3D"noreferrer">email preferences</=
+a>, <a href=3D"https://commspreferences.ebay.com/commsprefs?EmailUnsubscrib=
+e&amp;emailType=3D12025&amp;mkevt=3D1&amp;mkpid=3D0&amp;emsid=3De12025.m185=
+2.l1142&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fde14ef9b1cd49569c=
+3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D20260205195432&amp;=
+segname=3D12025" id=3D"m_-1592853444593060192footerUnsubscribeLink" style=
+=3D"color:#111820;text-decoration:underline!important" target=3D"_blank" re=
+l=3D"noreferrer">unsubscribe</a> or learn about <a href=3D"https://pages.eb=
+ay.com/help/account/protecting-account.html?mkevt=3D1&amp;mkpid=3D0&amp;ems=
+id=3De12025.m1852.l3167&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=3Dcd6ad792fd=
+e14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&amp;crd=3D202=
+60205195432&amp;segname=3D12025" id=3D"m_-1592853444593060192footerAccountP=
+rotectionLink" style=3D"color:#111820;text-decoration:underline!important" =
+target=3D"_blank" rel=3D"noreferrer">account protection</a>.<br>If you have=
+ a question, <a href=3D"https://www.ebay.com/help/home?mkevt=3D1&amp;mkpid=
+=3D0&amp;emsid=3De12025.m1852.l6369&amp;mkcid=3D7&amp;ch=3Dosgood&amp;euid=
+=3Dcd6ad792fde14ef9b1cd49569c3385d5&amp;bu=3D43766541939&amp;osub=3D-1%7E1&=
+amp;crd=3D20260205195432&amp;segname=3D12025" id=3D"m_-1592853444593060192f=
+ooterContactUsLink" style=3D"color:#111820;text-decoration:underline!import=
+ant" target=3D"_blank" rel=3D"noreferrer">contact us</a>.
+</p>
+<p style=3D"font-size:12px;line-height:22px;color:#414141;font-weight:400;m=
+argin-top:8px;display:inline-block;width:100%">
+eBay C=E2=80=8Commerce I=E2=80=8Cnc., 2=E2=80=8C<a href=3D"https://www.goog=
+le.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+nited+S=
++tates?entry=3Dgmail&amp;source=3Dg">065 H</a>=E2=80=8C<a href=3D"https://w=
+ww.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+=
+nited+S+tates?entry=3Dgmail&amp;source=3Dg">amilton A</a>=E2=80=8C<a href=
+=3D"https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C=
++A+9+5125,+U+nited+S+tates?entry=3Dgmail&amp;source=3Dg">ve., S</a>=E2=80=
+=8C<a href=3D"https://www.google.com/maps/search/2+065+H+amilton+A+ve.,+S+a=
+n+J+ose,+C+A+9+5125,+U+nited+S+tates?entry=3Dgmail&amp;source=3Dg">an J</a>=
+=E2=80=8C<a href=3D"https://www.google.com/maps/search/2+065+H+amilton+A+ve=
+.,+S+an+J+ose,+C+A+9+5125,+U+nited+S+tates?entry=3Dgmail&amp;source=3Dg">os=
+e, C</a>=E2=80=8C<a href=3D"https://www.google.com/maps/search/2+065+H+amil=
+ton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+nited+S+tates?entry=3Dgmail&amp;source=
+=3Dg">A 9</a>=E2=80=8C<a href=3D"https://www.google.com/maps/search/2+065+H=
++amilton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+nited+S+tates?entry=3Dgmail&amp;s=
+ource=3Dg">5125, U</a>=E2=80=8C<a href=3D"https://www.google.com/maps/searc=
+h/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+nited+S+tates?entry=3Dgm=
+ail&amp;source=3Dg">nited S</a>=E2=80=8C<a href=3D"https://www.google.com/m=
+aps/search/2+065+H+amilton+A+ve.,+S+an+J+ose,+C+A+9+5125,+U+nited+S+tates?e=
+ntry=3Dgmail&amp;source=3Dg">tates</a>
+</p>
+<p style=3D"font-size:12px;line-height:22px;color:#414141;font-weight:400;m=
+argin-top:8px;display:inline-block;width:100%">
+=C2=A9 1995-2026 eBay Inc. or its affiliates
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+=20
+   =20
+  </div>
+
+</div></div></div>
+
+--000000000000e7e76a064a487691--
+

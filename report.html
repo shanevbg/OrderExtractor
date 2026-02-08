@@ -1,50 +1,149 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en" data-theme="dark">
 <head>
-    <title>Billing Log 1.0.93</title>
-<style>
-    :root { --bg: #121212; --surface: #1e1e1e; --text: #e0e0e0; --border: #333; --accent: #0078d4; --danger: #d93025; --success: #28a745; }
-    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; }
-    .toolbar { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
-    table { width: 100%; border-collapse: collapse; background: var(--surface); }
-    th, td { border: 1px solid var(--border); padding: 12px; text-align: left; vertical-align: top; }
-    th { background: #252525; color: #aaa; font-size: 11px; text-transform: uppercase; }
-    button { padding: 6px 12px; cursor: pointer; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; }
-    .copy-btn { background: var(--accent); color: white; }
-    .delete-btn { background: var(--danger); color: white; }
-    .export-btn { background: var(--success); color: white; }
-    .import-btn { background: #555; color: white; }
-    .open-btn { background: #444; color: white; }
-    .open-btn:hover { opacity: 0.8; }
-    .debug-area { margin-top: 8px; font-size: 11px; }
-    details { background: #2a2a2a; padding: 5px; border-radius: 4px; border: 1px solid #444; }
-    summary { cursor: pointer; color: #ffca28; font-weight: bold; padding: 2px; }
-    pre { white-space: pre-wrap; word-wrap: break-word; color: #bbb; max-height: 150px; overflow-y: auto; background: #111; padding: 5px; }
-    a { color: #4fc3f7; text-decoration: none; font-weight: bold; }
-    #package-count { font-size: 14px; color: #888; margin-left: auto; padding-right: 10px; }
-</style>
+    <meta charset="utf-8">
+    <title>Fulfillment Dashboard</title>
+    <style>
+        :root {
+            --bg-body: #121212; --bg-card: #1e1e1e; --bg-header: #2d2d2d;
+            --text-main: #e0e0e0; --text-muted: #a0a0a0; --border: #333;
+            --accent: #bb86fc; --accent-hover: #9965f4;
+            --danger: #cf6679; --success: #03dac6;
+            --input-bg: #2d2d2d; --input-text: #fff;
+        }
+        [data-theme="light"] {
+            --bg-body: #f5f5f5; --bg-card: #ffffff; --bg-header: #f0f0f0;
+            --text-main: #333333; --text-muted: #666666; --border: #ddd;
+            --accent: #0078d4; --accent-hover: #005a9e;
+            --danger: #d32f2f; --success: #00796b;
+            --input-bg: #fff; --input-text: #333;
+        }
+
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: var(--bg-body); color: var(--text-main); transition: background 0.3s; }
+        h2 { margin: 0; font-weight: 600; }
+        
+        .toolbar { background: var(--bg-card); padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; gap: 15px; align-items: center; border: 1px solid var(--border); flex-wrap: wrap; }
+        
+        .filter-group { display: flex; align-items: center; gap: 15px; border-left: 1px solid var(--border); padding-left: 15px; margin-left: 5px; }
+        .search-input { padding: 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--input-text); width: 200px; }
+        .filter-label { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; user-select: none; }
+
+        button { cursor: pointer; padding: 8px 16px; border: 1px solid var(--border); background: var(--bg-header); color: var(--text-main); border-radius: 6px; font-size: 13px; transition: all 0.2s; }
+        button:hover { filter: brightness(1.1); }
+        button.primary { background: var(--accent); color: #fff; border: none; font-weight: bold; }
+        button.primary:hover { background: var(--accent-hover); }
+        #theme-btn { background: transparent; border: none; font-size: 20px; padding: 0 10px; }
+
+        #inventory-panel { background: var(--bg-card); padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border); display: none; }
+        .inv-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .inv-table th { text-align: left; color: var(--text-muted); font-size: 12px; border-bottom: 1px solid var(--border); padding: 8px; }
+        .inv-table td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .inv-name-input { width: 100%; background: transparent; border: none; color: var(--text-main); font-weight: bold; font-size: 14px; border-bottom: 1px solid transparent; }
+        .inv-name-input:focus { border-bottom: 1px solid var(--accent); outline: none; }
+        .inv-note-input { width: 100%; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-style: italic; border-bottom: 1px solid transparent; }
+        
+        .variant-container { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .variant-tag { display: flex; align-items: center; background: var(--bg-header); border: 1px solid var(--border); border-radius: 4px; padding: 2px 4px; font-size: 12px; }
+        
+        /* UPDATED: Widths increased for better readability */
+        .var-name-edit { width: 70px; background: transparent; border: none; border-bottom: 1px dotted var(--text-muted); color: var(--text-muted); font-weight: 600; text-align: right; margin-right: 4px; font-size: 11px; }
+        .var-stock-edit { width: 60px; padding: 2px; background: var(--input-bg); border: 1px solid var(--border); color: var(--accent); font-weight: bold; text-align: center; border-radius: 2px; }
+        
+        .var-btn { border: none; background: transparent; cursor: pointer; color: var(--text-muted); font-size: 14px; padding: 0 4px; line-height: 1; margin-left: 2px; }
+        
+        #orderTable { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--bg-card); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        #orderTable th { background-color: var(--bg-header); color: var(--text-main); padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--border); }
+        #orderTable td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: top; }
+        
+        .qty-input { width: 30px; background: var(--input-bg); border: 1px solid var(--border); color: var(--accent); text-align: center; border-radius: 3px; font-weight: bold; margin-left: 5px; }
+        
+        .tracking-input { background: var(--input-bg); border: 1px solid var(--border); color: var(--input-text); padding: 6px; border-radius: 4px; width: 140px; }
+        .note-input { width: 95%; background: rgba(0,0,0,0.1); border: none; border-bottom: 1px dotted var(--text-muted); color: var(--text-muted); font-size: 12px; margin-top: 5px; padding: 4px; }
+        .note-input:focus { outline: none; border-bottom: 1px solid var(--accent); color: var(--text-main); }
+
+        .paste-btn, .reply-btn { padding: 4px 8px; font-size: 12px; margin-left: 5px; background: var(--bg-header); }
+        .reply-btn { color: var(--accent); }
+        .del-btn { background: rgba(207, 102, 121, 0.1); color: var(--danger); border: 1px solid var(--danger); padding: 2px 8px; border-radius: 4px; }
+        
+        .name-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+        
+        #footer-ver { margin-top: 30px; color: var(--text-muted); font-size: 11px; text-align: center; }
+    </style>
+</head>
 <body>
-<div class="toolbar">
-    <button id="btn-export" class="export-btn">💾 Save Archive</button>
-    <button id="btn-import" class="import-btn">📂 Load Archive</button>
-    <button id="btn-email" class="email-btn" style="background: #0078d4; color: white;">📧 Email Report</button>
-    <button id="btn-clear" class="delete-btn">🗑️ Clear All</button>
-    <span id="package-count">Packages: 0</span>
-    <input type="file" id="file-input" style="display: none;" accept=".txt">
-</div>
-    <table>
+
+    <div class="toolbar">
+        <h2>📦 Fulfillment</h2>
+        
+        <div class="filter-group">
+            <input type="text" id="order-search" class="search-input" placeholder="🔍 Search Orders...">
+            <label class="filter-label"><input type="checkbox" id="filter-partial"> Partials</label>
+            <label class="filter-label"><input type="checkbox" id="filter-shipped"> Hide Shipped</label>
+        </div>
+
+        <div style="flex-grow:1"></div>
+        
+        <button id="toggle-inv-btn">Manage Inventory</button>
+        <button id="reload-btn">↻ Reload</button>
+        <button id="debug-btn">🐞</button>
+        <button id="theme-btn">◑</button>
+    </div>
+
+    <div id="inventory-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Inventory Levels</h3>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <label class="filter-label" style="color:var(--text-muted);">
+                    <input type="checkbox" id="filter-oos"> Hide Out of Stock
+                </label>
+                <label class="filter-label" style="color:var(--text-muted);">
+                    <input type="checkbox" id="filter-neg"> Negative Only
+                </label>
+            </div>
+            <div>
+                <input type="file" id="inv-file-input" accept=".csv,.json" style="display:none;">
+                <button id="import-inv-btn">⬆ Import</button>
+                <button id="save-inv-btn" class="primary">Save</button>
+            </div>
+        </div>
+        <table class="inv-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Code (ID)</th>
+                    <th style="width: 30%;">Product / Description</th>
+                    <th style="width: 45%;">Variants</th>
+                    <th style="width: 5%;"></th>
+                </tr>
+            </thead>
+            <tbody id="inv-grid"></tbody>
+        </table>
+        <button id="add-product-btn" style="margin-top:10px;">+ Add New Product</button>
+    </div>
+
+    <table id="orderTable">
         <thead>
             <tr>
-                <th>Order #</th>
-                <th>Item / Variation</th>
-                <th>Shipping Address</th>
-                <th>Notes</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th style="width: 10%">Order #</th>
+                <th style="width: 25%;">Item & Stock</th>
+                <th style="width: 25%;">Shipping Address</th>
+                <th style="width: 20%;">Tracking & Notes</th>
+                <th style="width: 5%;">Partial?</th> 
+                <th style="width: 15%;">Actions</th>
             </tr>
         </thead>
-        <tbody id="report-body"></tbody>
+        <tbody></tbody>
     </table>
+    
+    <button id="add-manual-order-btn" style="margin-top:10px; width:100%; border:1px dashed var(--border); background:transparent; color:var(--text-muted);">+ Add Manual Order</button>
+
+    <div style="margin-top: 20px; text-align: right;">
+        <button id="email-list-btn">📧 Forward List</button>
+        <button id="export-btn">⬇ CSV</button>
+        <button id="email-btn" class="primary" style="margin-left: 10px;">✉ Commit & Email</button>
+    </div>
+
+    <div id="footer-ver">Order Extractor v6.5.1</div>
     <script src="report.js"></script>
+
 </body>
 </html>

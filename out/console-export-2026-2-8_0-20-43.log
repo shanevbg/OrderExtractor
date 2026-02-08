@@ -1,0 +1,28 @@
+00:04:39.442 WebExtensions: Following Firefox, Thunderbird will soon require the `sessions` permission in order to use sessions.removeTabValue(). ext-sessions.js:54
+00:04:39.460 Error: Invalid tab ID: 147 undefined
+00:04:58.011 sendRemoveListener on closed conduit order-extractor@shane.274877918794 ConduitsChild.sys.mjs:122:13
+00:04:58.094 1770530698094	addons.webextension.maxfrei@web.de	WARN	Loading extension 'maxfrei@web.de': Reading manifest: Warning processing theme.colors.toolbar_field_separator: This color property is ignored in >= 89.
+00:05:35.655 window.controllers/Controllers is deprecated. Do not use it for UA detection. 2 blank
+00:05:35.871 Window.fullScreen attribute is deprecated and will be removed in the future. ext-mail.js:1313:9
+00:05:48.823 WebExtensions: Following Firefox, Thunderbird will soon require the `sessions` permission in order to use sessions.removeTabValue(). ext-sessions.js:54
+00:05:48.849 TypeError: can't access property "id", keybWnd is null me-background.js:382:9
+00:05:48.857 Error: Invalid tab ID: 150 undefined
+00:15:17.364 sendRemoveListener on closed conduit order-extractor@shane.274877918866 ConduitsChild.sys.mjs:122:13
+00:15:17.373 WebExtensions: Following Firefox, Thunderbird will soon require the `sessions` permission in order to use sessions.removeTabValue(). ext-sessions.js:54
+00:15:17.451 1770531317451	addons.webextension.maxfrei@web.de	WARN	Loading extension 'maxfrei@web.de': Reading manifest: Warning processing theme.colors.toolbar_field_separator: This color property is ignored in >= 89.
+00:15:17.453 Error: Invalid tab ID: 149 undefined
+00:15:22.226 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-9swCTns+I2kkwDqvn0MRwm82z3EZMv2tTHD4k6DVyRY=') together with 'unsafe-hashes'. report.js:249:97
+00:15:22.226 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-5t/WGy2tiS6b0oOo59XG2jfDYFdwUp/UY2APaXtovX8=') together with 'unsafe-hashes'. report.js:249:97
+00:15:22.226 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-QR6kEIu7vCa2pE0ZqWdLsf5ilVA9WtebF9dOHGaOcoU=') together with 'unsafe-hashes'. report.js:249:97
+00:16:05.924 Uncaught TypeError: can't access property "document", mail3pane is null
+    NostalgyEBI3pane chrome://nostalgy/content/misc.js:26
+    NostalgyFocusThreadPane chrome://nostalgy/content/nostalgy.js:1261
+    SetFocusThreadPane chrome://nostalgy/content/nostalgy.js:193
+    NostalgyEscape chrome://nostalgy/content/nostalgy.js:1280
+    onNostalgyKeyPressCapture chrome://nostalgy/content/nostalgy.js:1469
+misc.js:26:4
+00:16:28.681 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-9swCTns+I2kkwDqvn0MRwm82z3EZMv2tTHD4k6DVyRY=') together with 'unsafe-hashes'. report.js:249:97
+00:16:28.681 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-5t/WGy2tiS6b0oOo59XG2jfDYFdwUp/UY2APaXtovX8=') together with 'unsafe-hashes'. report.js:249:97
+00:16:28.681 Content-Security-Policy: The page’s settings blocked an event handler (script-src-attr) from being executed because it violates the following directive: “script-src 'self' 'wasm-unsafe-eval'”. Consider using a hash ('sha256-QR6kEIu7vCa2pE0ZqWdLsf5ilVA9WtebF9dOHGaOcoU=') together with 'unsafe-hashes'. report.js:249:97
+00:16:45.197 Empty string passed to getElementById(). index.html
+00:20:41.178 Empty string passed to getElementById(). react-dom.mjs:2580:14
