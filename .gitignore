@@ -1,1 +1,11 @@
 .aider*
+# Build output directory
+out/
+node_modules/
+# Packaged extension files (if generated outside 'out')
+*.xpi
+*.7z
+# System and IDE files (optional but recommended)
+.DS_Store
+.vscode/
+node_modules/

@@ -1,9 +1,9 @@
 ﻿/**
  * Order Extractor - Fulfillment Logic
- * Version: 7.2.1 (Default Stores Updated)
+ * Version: 7.4.0 (Merge & History)
  */
 
-// Default Stores - Matches by SENDER (Who forwarded the email)
+// Default Stores
 const DEFAULT_STORES = [
     { name: "Bio Nootropics", email: "bionootropics@gmail.com", signature: "Thank you,\nBio Nootropics Team" },
     { name: "Peptide Amino", email: "bmntherapy@gmail.com", signature: "Best regards,\nPeptide Amino Support" }
@@ -29,10 +29,11 @@ let stockHistory = [];
 // Filter States
 let filterSearch = "";
 let filterPartialOnly = false;
-let filterShipped = false;
+let filterShipped = true; // DEFAULT: HIDE SHIPPED
 let filterInvOOS = false;
 let filterInvNeg = false;
 let filterStore = "ALL"; 
+let filterDate = ""; // Date string YYYY-MM-DD
 
 // --- UTILITIES ---
 
@@ -44,7 +45,8 @@ function escapeHtml(text) {
 function initTheme() {
     const savedTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
-    document.getElementById("theme-btn").addEventListener("click", () => {
+    let btn = document.getElementById("theme-btn");
+    if(btn) btn.addEventListener("click", () => {
         const current = document.documentElement.getAttribute("data-theme");
         const next = current === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", next);
@@ -77,6 +79,8 @@ function loadStoreConfig() {
 
 function renderStoreConfig() {
     let container = document.getElementById("store-list-container");
+    if (!container) return; 
+    
     container.innerHTML = "";
     
     globalStores.forEach((store, index) => {
@@ -251,12 +255,13 @@ function loadInventory() {
 }
 
 function populateStoreFilter() {
-    // Collect stores from both Inventory items AND Configured Stores
+    let select = document.getElementById("inv-store-filter");
+    if(!select) return;
+
     let stores = new Set();
     globalStores.forEach(s => stores.add(s.name));
     globalInventory.forEach(i => { if(i.store) stores.add(i.store); });
 
-    let select = document.getElementById("inv-store-filter");
     select.innerHTML = '<option value="ALL">All Stores</option>';
     stores.forEach(s => {
         let opt = document.createElement("option");
@@ -314,9 +319,11 @@ function saveInventory() {
         
         let btns = [document.getElementById("save-inv-btn"), document.getElementById("save-inv-btn-bottom")];
         btns.forEach(b => {
-            let original = b.textContent;
-            b.textContent = "Saved!";
-            setTimeout(() => b.textContent = original, 1000);
+            if(b) {
+                let original = b.textContent;
+                b.textContent = "Saved!";
+                setTimeout(() => b.textContent = original, 1000);
+            }
         });
     });
 }
@@ -343,6 +350,7 @@ function bulkMoveItems() {
 
 function renderInventoryPanel() {
     let tbody = document.getElementById("inv-grid");
+    if(!tbody) return;
     tbody.innerHTML = "";
     
     filterStore = document.getElementById("inv-store-filter").value;
@@ -728,26 +736,50 @@ function openConvertModal(itemIdx) {
 
 function renderOrderTable() {
     let tbody = document.querySelector("#orderTable tbody");
+    if(!tbody) return;
     tbody.innerHTML = ""; 
 
     if (!globalOrders || globalOrders.length === 0) {
-        document.getElementById("inventory-panel").style.display = "block";
+        let panel = document.getElementById("inventory-panel");
+        if(panel) panel.style.display = "block";
         return;
     }
 
     globalOrders.forEach((order, orderIdx) => {
-        let safeOrder = escapeHtml(order.order);
-        let safeName = order.addressLines && order.addressLines[0] ? order.addressLines[0].toLowerCase() : "";
-        let isCancelled = order.status === "cancelled";
+        // --- 1. FILTERING LOGIC ---
         
-        if (filterPartialOnly && !order.isPartial) return;
+        // Hide Cancelled if not relevant (or style them?)
+        // Currently we show them but styled differently.
+        
+        // Hide Shipped?
         if (filterShipped && order.tracking && order.tracking.trim() !== "") return;
         
+        // Filter by Date?
+        if (filterDate) {
+            let orderDate = new Date(order.date);
+            let targetDate = new Date(filterDate);
+            // Reset times for date-only comparison
+            orderDate.setHours(0,0,0,0);
+            targetDate.setHours(0,0,0,0);
+            
+            if (orderDate < targetDate) return;
+        }
+
+        // Partials Only?
+        if (filterPartialOnly && !order.isPartial) return;
+        
+        // Search Filter
+        let safeOrder = escapeHtml(order.order);
+        let safeName = order.addressLines && order.addressLines[0] ? order.addressLines[0].toLowerCase() : "";
         if (filterSearch) {
             let term = filterSearch.toLowerCase();
             let match = safeOrder.toLowerCase().includes(term) || safeName.includes(term) || (order.tracking && order.tracking.includes(term));
             if (!match) return;
         }
+
+        // --- 2. RENDER ROW ---
+        let isCancelled = order.status === "cancelled";
+        let isUpdated = order.highlight === "updated";
 
         let addressDisplay = order.addressLines && order.addressLines.length > 0 
             ? `<a href="#" class="name-link" data-msgid="${order.messageId}">${escapeHtml(order.addressLines[0])}</a><br>${order.addressLines.slice(1).map(escapeHtml).join("<br>")}`
@@ -758,7 +790,6 @@ function renderOrderTable() {
             orderIdHtml = `<a href="#" data-action="open-external" data-url="${escapeHtml(order.orderLink)}" style="color:var(--accent); text-decoration:underline; cursor:pointer;" title="Open in Browser">${safeOrder}</a>`;
         }
 
-        // Show store badge if known
         let storeBadge = order.sender ? `<br><span style="font-size:10px; color:var(--text-muted); border:1px solid var(--border); padding:1px 3px; border-radius:3px;">${escapeHtml(order.sender)}</span>` : "";
 
         if(isCancelled) {
@@ -802,6 +833,7 @@ function renderOrderTable() {
 
         let tr = document.createElement("tr");
         if(isCancelled) tr.className = "order-cancelled";
+        else if(isUpdated) tr.className = "order-updated"; // Red Highlight Logic
         
         tr.innerHTML = `
             <td>${orderIdHtml} ${storeBadge}</td>
@@ -1019,9 +1051,6 @@ function handleTableClick(e) {
         win.document.write(invoiceHtml);
     }
 }
-
-// ... (Rest of logic: emailOpenOrders, cancelOrder, addItem, removeItem, deleteRow, saveOrders, match, export, commit, copy, manual) ...
-// Copy-pasting the end of file functions to ensure completeness:
 
 function emailOpenOrders() {
     let openOrders = globalOrders.filter(o => !o.tracking && o.status !== "cancelled");
@@ -1262,10 +1291,21 @@ document.addEventListener("DOMContentLoaded", function() {
             renderInventoryPanel(); 
         });
         document.getElementById("order-search").addEventListener("input", function() { filterSearch = this.value; renderOrderTable(); });
+        
+        // DATE FILTER
+        document.getElementById("filter-date-start").addEventListener("input", function() { filterDate = this.value; renderOrderTable(); });
+
         document.getElementById("filter-partial").addEventListener("change", function() { filterPartialOnly = this.checked; renderOrderTable(); });
         document.getElementById("filter-oos").addEventListener("change", function() { filterInvOOS = this.checked; renderInventoryPanel(); });
         document.getElementById("filter-neg").addEventListener("change", function() { filterInvNeg = this.checked; renderInventoryPanel(); });
-        document.getElementById("filter-shipped").addEventListener("change", function() { filterShipped = this.checked; renderOrderTable(); });
+        
+        // Default: HIDE SHIPPED
+        let shipFilter = document.getElementById("filter-shipped");
+        if(shipFilter) {
+            shipFilter.checked = true; // Set checkbox visual state
+            filterShipped = true; // Set logic state
+            shipFilter.addEventListener("change", function() { filterShipped = this.checked; renderOrderTable(); });
+        }
 
         document.querySelector("#orderTable tbody").addEventListener("click", handleTableClick);
 

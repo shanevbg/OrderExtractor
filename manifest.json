@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Order Extractor",
   "description": "Extracts order details, manages inventory, and generates reports.",
-  "version": "6.5.3",
+  "version": "7.4.0",
   "author": "Shane Vincent",
   "permissions": [
     "menus",

@@ -1,6 +1,6 @@
 ﻿/**
  * Order Extractor - Background Script
- * Version: 7.2.1 (Sender-Based Store Detection)
+ * Version: 7.4.0 (Multi-Order Table Parsing)
  */
 
 // --- MENUS ---
@@ -37,17 +37,18 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function processMessages() {
     try {
-        await browser.storage.local.set({ "reportData": [] });
+        // 1. LOAD EXISTING DATA (Merge Strategy)
+        let storage = await browser.storage.local.get("reportData");
+        let currentData = storage.reportData || [];
         
-        // Load Store Config
         let storeConfig = [];
-        let storage = await browser.storage.local.get("storeConfig");
-        if (storage.storeConfig) storeConfig = storage.storeConfig;
+        let configStorage = await browser.storage.local.get("storeConfig");
+        if (configStorage.storeConfig) storeConfig = configStorage.storeConfig;
 
         let messageList = await browser.mailTabs.getSelectedMessages();
         if (!messageList.messages?.length) return;
 
-        let extractedData = [];
+        let extractedOrders = [];
         
         for (let header of messageList.messages) {
             try {
@@ -57,26 +58,52 @@ async function processMessages() {
                 let parseBody = text || html || ""; 
                 let cleanBody = sanitizeBody(parseBody);
 
-                // --- NEW LOGIC: DETECT STORE BY SENDER ---
-                // Since all emails go to 'shipping@...', we check WHO forwarded it.
+                // Determine Store by Sender
                 let storeName = "Manual"; 
                 if (header.author) {
-                    let sender = header.author.toLowerCase(); // e.g. "bionootropics <bionootropics@gmail.com>"
-                    
-                    // Find matching store config
+                    let sender = header.author.toLowerCase(); 
                     let match = storeConfig.find(s => s.email && sender.includes(s.email.toLowerCase()));
                     if (match) storeName = match.name;
                 }
 
-                let data = detectAndParse(cleanBody, html || text, header.id, storeName);
+                // Parse (Can return Object OR Array)
+                let result = detectAndParse(cleanBody, html || text, header.id, storeName, header.date);
                 
-                if (data) extractedData.push(data);
+                // Normalize to array
+                let orders = Array.isArray(result) ? result : (result ? [result] : []);
+                
+                extractedOrders.push(...orders);
+
             } catch (innerErr) {
                 console.error("Message Error:", innerErr);
             }
         }
 
-        await browser.storage.local.set({ "reportData": extractedData });
+        // --- MERGE LOGIC ---
+        extractedOrders.forEach(newOrder => {
+            let existingIndex = currentData.findIndex(o => o.order === newOrder.order);
+            
+            if (existingIndex > -1) {
+                // Update existing
+                let existing = currentData[existingIndex];
+                
+                // Detect Changes (Simple serialization check)
+                let oldSig = JSON.stringify({ i: existing.items, a: existing.addressLines });
+                let newSig = JSON.stringify({ i: newOrder.items, a: newOrder.addressLines });
+                
+                if (oldSig !== newSig) {
+                    existing.items = newOrder.items;
+                    existing.addressLines = newOrder.addressLines;
+                    existing.highlight = "updated"; // Visual Flag
+                    existing.note = (existing.note || "") + ` [Updated ${new Date().toLocaleDateString()}]`;
+                }
+            } else {
+                // Add New
+                currentData.push(newOrder);
+            }
+        });
+
+        await browser.storage.local.set({ "reportData": currentData });
         
         let tabs = await browser.tabs.query({ title: "Fulfillment Dashboard" });
         if (tabs.length > 0) {
@@ -97,7 +124,8 @@ async function addSelectionOrder(text) {
     let cleanText = sanitizeBody(text);
     
     let data = {
-        order: "Manual-Select",
+        order: "Manual-" + Date.now(),
+        date: new Date().toISOString(),
         items: [{ name: "Check Selection", qty: 1 }],
         addressLines: cleanAddress(cleanText.split("\n")),
         note: "Added via text selection",
@@ -126,7 +154,6 @@ async function getThread(messageId) {
         let threadMessages = await browser.messages.query({ threadId: originalMsg.threadId });
         return threadMessages.sort((a, b) => b.date - a.date).map(formatMsg);
     } catch (e) {
-        console.error("Thread Error:", e);
         return [];
     }
 }
@@ -140,6 +167,14 @@ function formatMsg(m) {
         date: m.date,
         folder: m.folder ? m.folder.name : ""
     };
+}
+
+// --- UTILS ---
+
+function decodeQuotedPrintable(text) {
+    return text
+        .replace(/=\r?\n/g, "") 
+        .replace(/=([0-9A-F]{2})/gi, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
 function extractBodyParts(part) {
@@ -159,18 +194,29 @@ function extractBodyParts(part) {
     return { text, html };
 }
 
-function detectAndParse(text, html, msgId, storeName) {
-    if (text.includes("You made the sale") || text.includes("eBay")) return parseEbay(text, html, msgId, storeName);
-    else if (text.includes("New Order") || text.includes("bionootropics.com")) return parseWooCommerce(text, html, msgId, storeName);
-    return null;
+function sanitizeBody(text) {
+    if (text.includes("=3D") || text.includes("=E2")) {
+        text = decodeQuotedPrintable(text);
+    }
+    return text
+        .replace(/^>+ ?/gm, "") 
+        .replace(/<http[\s\S]+?>/g, "")
+        .replace(/\[image:[^\]]+\]/g, "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\t/g, " ");
 }
 
-function sanitizeBody(text) {
-    return text.replace(/^> ?/gm, "")
-               .replace(/<http[\s\S]+?>/g, "")
-               .replace(/\[image:[^\]]+\]/g, "")
-               .replace(/\r\n/g, "\n")
-               .replace(/\t/g, " ");
+function detectAndParse(text, html, msgId, storeName, emailDate) {
+    // 1. Table Dump Parser (Priority for "Re:" emails with tables)
+    if (text.includes("Order #") && text.includes("Shipping Address")) {
+        return parseTable(text, html, msgId, storeName, emailDate);
+    }
+    
+    // 2. Standard Parsers
+    if (text.includes("You made the sale") || text.includes("eBay")) return parseEbay(text, html, msgId, storeName, emailDate);
+    else if (text.includes("New Order") || text.includes("bionootropics.com")) return parseWooCommerce(text, html, msgId, storeName, emailDate);
+    
+    return null;
 }
 
 function cleanAddress(lines) {
@@ -186,7 +232,63 @@ function cleanAddress(lines) {
     });
 }
 
-function parseEbay(text, html, msgId, storeName) {
+// --- PARSERS ---
+
+// NEW: Handles "Report" style tables in replies
+function parseTable(text, html, msgId, storeName, emailDate) {
+    let orders = [];
+    
+    // Split by common separators or Order IDs
+    // Look for patterns like "26-14177-87835" (eBay)
+    let blocks = text.split(/(?=\d{2}-\d{5}-\d{5})/g);
+    
+    blocks.forEach(block => {
+        let orderMatch = block.match(/^(\d{2}-\d{5}-\d{5})/);
+        if (!orderMatch) return;
+        
+        let orderNum = orderMatch[1];
+        let lines = block.split("\n").map(l => l.trim()).filter(l => l);
+        
+        // Strategy: Line 0 is ID. Line 1 is usually Product. Following lines are Address.
+        // We look for address markers (City, State Zip)
+        
+        let product = "Unknown Item";
+        let rawAddress = [];
+        
+        // Heuristic: Product is usually the 2nd line in these reports
+        if(lines.length > 1) product = lines[1];
+        
+        // Find Address: Look for the name (usually line 2 or 3) down to Zip
+        // In the sample: ID, Product, Name, Street, City...
+        let nameIndex = 2; // Default guess
+        
+        // refine name index (skip product lines)
+        if(lines[2] && lines[2].includes("Capsules")) nameIndex = 3; 
+        
+        // Capture address lines until we hit a Date or "United States"
+        for (let i = nameIndex; i < lines.length; i++) {
+            let l = lines[i];
+            if (l.match(/\d{4}-\d{2}-\d{2}/)) break; // Stop at date
+            if (l.includes("Tracking #")) break;
+            rawAddress.push(l);
+        }
+
+        orders.push({
+            order: orderNum,
+            date: emailDate,
+            items: [{ name: product, qty: 1 }],
+            addressLines: cleanAddress(rawAddress),
+            note: "Extracted from Reply Table",
+            sender: storeName === "Manual" ? "eBay" : storeName, // Default to eBay for these IDs
+            messageId: msgId,
+            orderLink: null
+        });
+    });
+    
+    return orders;
+}
+
+function parseEbay(text, html, msgId, storeName, emailDate) {
     let orderNum = "Unknown";
     let product = "Unknown Item";
     let rawAddress = [];
@@ -201,11 +303,11 @@ function parseEbay(text, html, msgId, storeName) {
         if (p && !p.includes(":")) product = p;
     } 
     if (product === "Unknown Item") {
-        let titleMatch = text.match(/sale\s+for\s+([^\n-]+)/i);
+        let titleMatch = text.match(/sale\s+for\s+([^\n]+?)(?=\s+–|\s+-|\n|$)/i);
         if (titleMatch) product = titleMatch[1].trim();
     }
 
-    let variantMatch = text.match(/Capsule Count(?:\s*\n+)+([^\n]+)/i);
+    let variantMatch = text.match(/Capsule Count[\s\S]*?(\d+\s*Caps)/i);
     if (variantMatch) {
         product += " " + variantMatch[1].trim(); 
     }
@@ -222,6 +324,7 @@ function parseEbay(text, html, msgId, storeName) {
 
     return { 
         order: orderNum, 
+        date: emailDate, 
         items: [{ name: product, qty: 1 }], 
         addressLines: cleanAddress(rawAddress), 
         note: text.includes("VAT Paid") ? "VAT Paid" : "", 
@@ -231,7 +334,7 @@ function parseEbay(text, html, msgId, storeName) {
     };
 }
 
-function parseWooCommerce(text, html, msgId, storeName) {
+function parseWooCommerce(text, html, msgId, storeName, emailDate) {
     let orderMatch = text.match(/Order\s+(?:#)?(\d+)/i);
     let orderNum = orderMatch ? orderMatch[1] : "Woo";
 
@@ -297,7 +400,8 @@ function parseWooCommerce(text, html, msgId, storeName) {
     if (storeName === "Manual") storeName = "WooCommerce";
 
     return { 
-        order: orderNum, 
+        order: orderNum,
+        date: emailDate, 
         items: items, 
         addressLines: cleanAddress(rawAddress), 
         email: email, 
