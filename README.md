@@ -1,60 +1,76 @@
 ﻿# Order Extractor Extension
 
 **Target:** Mozilla Thunderbird (Manifest V2)  
-**Current Version:** 6.5.2 (Sync with Manifest)  
+**Current Version:** 7.4.1  
 **Author:** Shane Vincent / Gemini Assistant
 
 ## 📖 Overview
-This is a specialized Thunderbird Mail Extension designed to streamline e-commerce fulfillment. It extracts order details (Order #, Product, Address) from incoming **eBay** and **WooCommerce** emails, checks them against a local inventory database, and generates shipping reports.
+This is a specialized Thunderbird Mail Extension designed to streamline e-commerce fulfillment for multiple storefronts. It intelligently extracts order details from **eBay**, **WooCommerce**, and **Report Emails** (HTML Tables), matches them against a local inventory database, and generates shipping reports.
 
 ---
 
-## 🛠 Parsing Logic
+## ✨ Key Features (v7.x)
 
-### eBay Parsing (Robust Multiline)
-* **Problem:** Forwarded emails often insert blank lines between labels and values.
-* **Solution:** The regex now uses a non-greedy multiline match to hop over empty lines.
+### 🏪 Multi-Store Management
+* **Store Configuration:** Define multiple storefronts (e.g., "eBay", "WooCommerce", "Wholesale") with specific settings.
+* **Smart Detection:** Automatically assigns orders to a store based on the **Sender/Forwarder Email** (e.g., emails from `bionootropics@gmail.com` go to the "Bio Nootropics" store).
+* **Dynamic Replies:** "Reply to Customer" button pulls the correct email signature/template for the identified store.
 
-### WooCommerce Parsing
-* **Address Cleaning:** Aggressively removes Google Maps links (`<http...>`) injected by Gmail forwarding.
-* **Contact Info:** Extracts and removes Phone/Email from the address block to prevent formatting issues in Stamps.com.
+### 📦 Inventory System
+* **Ledger & History:** Tracks every stock change (shipments, manual edits, restocking) with a timestamped log. View via the **"📊 Stock History"** button.
+* **Bulk Tools:** Filter items by keyword and use **"Bulk Move"** to reassign them to a different store instantly.
+* **Variants:** Supports complex product variants (e.g., "20 Caps", "60 Caps") per item.
 
----
-
-## 📦 Inventory System
-The extension maintains a lightweight **Inventory Management System** (IMS) stored in `browser.storage.local`.
-
-* **Negative Stock Alerts:** In the shipping report email, negative stock numbers are highlighted in **RED** and set to **BLINK** (CSS animation) to demand attention.
-* **CSV Attachment:** The "Commit & Email" button attaches the full **Inventory CSV** (not the orders list) to facilitate restocking.
-
----
-
-## ⚠️ Known Pitfalls & Lessons Learned
-*Do not repeat these mistakes!*
-
-1.  **Content Security Policy (CSP) Errors:**
-    * *Issue:* Using `'unsafe-inline'` in `manifest.json` causes Thunderbird 115+ to block the extension from loading.
-    * *Fix:* Ensure CSP is set to `"script-src 'self'; object-src 'self'"`. Do not use inline scripts in HTML files.
-2.  **Google Maps Links Break Parsing:**
-    * *Issue:* Gmail forwards inject hidden `<http...>` links between address lines.
-    * *Fix:* The parser MUST explicitly filter out lines starting with `<http` or containing `googleusercontent.com` before reading the address.
-
-3.  **Empty Lines in Regex:**
-    * *Issue:* Forwarding often creates double newlines (`\n\n`) which standard regex treats as a "Stop" signal.
-    * *Fix:* Use specific Stop Words (e.g., "Congratulations", "Billing address") instead of relying on empty lines to detect the end of a block.
-
-4.  **CSV Attachments in Compose:**
-    * *Issue:* Generating a `File` object in JS and attaching it to `compose.beginNew` sometimes fails to "bridge" to the actual email window in older Thunderbird versions.
-    * *Fix:* If attachments fail, use a "Force Download" to local disk as a fallback, or ensure the file type is strictly `text/csv`.
+### 🛠 Advanced Parsing
+* **Merge & Update:** Extracting orders does *not* wipe the dashboard. It merges new orders into the existing list.
+    * **Updates:** If an order exists but details changed, it updates the record and highlights it in **RED**.
+* **HTML Table Support:** Capable of parsing "Report" style emails containing tables of multiple orders.
+* **Reply Chain Support:** aggressively cleans quoted text and decodes Quoted-Printable encoding to read order details buried in "Re: Re:" chains.
 
 ---
 
-## 🚀 Build Instructions
+## 🚀 Workflow Guide
+
+### 1. Setup
+* Click **"🏪 Stores"** in the dashboard toolbar.
+* Add your stores. Set the **Sender Email** (who forwards the order to you) as the match key.
+* Set your **Reply Signature** for each store.
+
+### 2. Daily Processing
+1.  **Extract:** Select order emails in Thunderbird -> Right-click -> **"Extract Orders"**.
+2.  **Review:** Open the Dashboard. New/Updated orders appear in the list.
+3.  **Link:** If an item is red/unknown, click **"⚠ Link"**.
+    * *Match & Learn:* Link it to an existing product. The extension remembers this alias forever.
+    * *Create New:* Create a new product. It inherits the Store Name from the order.
+4.  **Fulfillment:**
+    * Enter Tracking Numbers (or paste them).
+    * Click **"↩ Reply"** to send the shipping confirmation (uses Store Signature).
+    * Click **"🚫 Cancel"** to cancel an order and optionally **Restock Items**.
+5.  **Commit:** Click **"✉ Commit & Email"** to deduct stock, save history, and email the shipping report.
+
+---
+
+## ⚠️ Technical Pitfalls & Fixes
+
+1.  **Content Security Policy (CSP):**
+    * *Rule:* `manifest.json` must NOT use `'unsafe-inline'`. All scripts are external.
+
+2.  **Date Filtering:**
+    * The parser captures the email date. Use the **"Since: [Date]"** picker in the toolbar to filter old orders out of view without deleting them.
+
+3.  **Google Maps Links:**
+    * Gmail forwarding injects hidden `<http...>` links in address blocks. The parser (`cleanAddress` function) aggressively filters these out.
+
+4.  **Version Sanity:**
+    * The build script (`MakeXPI.ps1`) enforces strict version synchronization. `manifest.json`, `report.js`, and `report.html` MUST have matching version numbers, or the build will fail.
+
+---
+
+## 🏗 Build Instructions
 
 ### Using `MakeXPI.ps1`
-This PowerShell script handles versioning, cleaning, and packaging.
+This PowerShell script handles verification, cleaning, and packaging.
 
 **Usage:**
 ```powershell
-.\MakeXPI.ps1                  # Auto-detects version from manifest.json
-.\MakeXPI.ps1 -Version 6.5.2   # Forces a specific version update
+.\MakeXPI.ps1

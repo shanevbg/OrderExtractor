@@ -1,6 +1,6 @@
 ﻿/**
  * Order Extractor - Background Script
- * Version: 7.4.0 (Multi-Order Table Parsing)
+ * Version: 7.4.1 (Multi-Order Table Parsing)
  */
 
 // --- MENUS ---
