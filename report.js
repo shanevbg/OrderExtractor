@@ -1,6 +1,6 @@
 ﻿/**
  * Order Extractor - Fulfillment Logic
- * Version: 7.4.1 (Merge & History)
+ * Version: 7.5.0 (Substitution Support)
  */
 
 // Default Stores
@@ -29,11 +29,11 @@ let stockHistory = [];
 // Filter States
 let filterSearch = "";
 let filterPartialOnly = false;
-let filterShipped = true; // DEFAULT: HIDE SHIPPED
+let filterShipped = true; 
 let filterInvOOS = false;
 let filterInvNeg = false;
 let filterStore = "ALL"; 
-let filterDate = ""; // Date string YYYY-MM-DD
+let filterDate = ""; 
 
 // --- UTILITIES ---
 
@@ -439,12 +439,12 @@ function openResolver(orderIdx, itemIdx) {
     
     inner.innerHTML = `
         <h3 style="margin-top:0;">Resolve: <span style="color:var(--accent)">${escapeHtml(item.name)}</span></h3>
-        <p style="color:var(--text-muted); font-size:12px;">Link this item. We will remember your choice.</p>
+        <p style="color:var(--text-muted); font-size:12px;">Link this item to inventory, OR make a one-time substitution.</p>
         
         <div style="margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px;">
-            <h4>Option 1: Link to Existing</h4>
+            <h4>Select Product</h4>
             <select id="resolve-search" style="width:100%; padding:8px; background:var(--input-bg); color:var(--text-main); border:1px solid var(--border); margin-bottom:10px;">
-                <option value="">-- Select Product --</option>
+                <option value="">-- Select Inventory Item --</option>
             </select>
             
             <div id="resolve-variant-area" style="display:none; margin-top:10px;">
@@ -452,7 +452,13 @@ function openResolver(orderIdx, itemIdx) {
                     <select id="resolve-variant-select" style="flex-grow:1; padding:6px; background:var(--input-bg); color:var(--text-main); border:1px solid var(--border);"></select>
                     <input type="text" id="resolve-variant-new" value="${escapeHtml(detectedVariant)}" style="flex-grow:1; padding:6px; background:var(--input-bg); color:var(--text-main); border:1px solid var(--border); display:none;">
                 </div>
-                <button id="btn-link-existing" class="primary" style="width:100%; margin-top:10px;">🔗 Link & Learn</button>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button id="btn-link-existing" class="primary" style="flex:1;">🔗 Link & Learn</button>
+                    <button id="btn-substitute" style="flex:1; background:var(--warning); color:#000; border:none; font-weight:bold;">🔀 Substitute (One-Time)</button>
+                </div>
+                <div style="font-size:10px; color:var(--text-muted); margin-top:5px; text-align:center;">
+                    Link = Remember forever. Substitute = One-time change (logs note).
+                </div>
             </div>
         </div>
 
@@ -515,6 +521,7 @@ function openResolver(orderIdx, itemIdx) {
         }
     });
 
+    // --- LINK BUTTON (Permanent) ---
     document.getElementById("btn-link-existing").addEventListener("click", () => {
         let prodIdx = document.getElementById("resolve-search").value;
         let varVal = document.getElementById("resolve-variant-select").value;
@@ -548,6 +555,33 @@ function openResolver(orderIdx, itemIdx) {
         
         saveInventory(); 
         saveOrders();    
+        document.body.removeChild(modal);
+    });
+
+    // --- SUBSTITUTE BUTTON (One-Time) ---
+    document.getElementById("btn-substitute").addEventListener("click", () => {
+        let prodIdx = document.getElementById("resolve-search").value;
+        let varVal = document.getElementById("resolve-variant-select").value;
+        
+        if (!prodIdx) return;
+        
+        let targetProd = globalInventory[prodIdx];
+        // For sub, default to first variant if none picked or "New" picked incorrectly
+        let finalVariantName = (varVal && varVal !== "__NEW__") ? varVal : targetProd.variants[0].name;
+        
+        let oldName = item.name;
+        let newName = targetProd.name + " " + finalVariantName;
+        
+        // 1. Update Name
+        item.name = newName;
+        
+        // 2. Add Note
+        let subNote = `[Substituted: '${oldName}' -> '${newName}']`;
+        order.note = order.note ? order.note + " " + subNote : subNote;
+        
+        // 3. Save (NO ALIAS SAVING)
+        saveOrders();
+        renderOrderTable();
         document.body.removeChild(modal);
     });
 

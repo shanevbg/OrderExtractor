@@ -1,7 +1,7 @@
 ﻿# Order Extractor Extension
 
 **Target:** Mozilla Thunderbird (Manifest V2)  
-**Current Version:** 7.4.1  
+**Current Version:** 7.5.0  
 **Author:** Shane Vincent / Gemini Assistant
 
 ## 📖 Overview
@@ -10,6 +10,11 @@ This is a specialized Thunderbird Mail Extension designed to streamline e-commer
 ---
 
 ## ✨ Key Features (v7.x)
+
+### 🆕 Item Substitution (v7.5.0)
+* **One-Time Swaps:** When resolving an unknown item, you can now choose **"🔀 Substitute"** instead of linking.
+* **No Permanent Alias:** Unlike "Link & Learn", this does *not* train the system to always swap these items. It applies only to the current order.
+* **Auto-Logging:** Automatically appends a note to the order (e.g., `[Substituted: Salt 10g -> Table Salt 10g]`) for audit trails.
 
 ### 🏪 Multi-Store Management
 * **Store Configuration:** Define multiple storefronts (e.g., "eBay", "WooCommerce", "Wholesale") with specific settings.
@@ -25,7 +30,7 @@ This is a specialized Thunderbird Mail Extension designed to streamline e-commer
 * **Merge & Update:** Extracting orders does *not* wipe the dashboard. It merges new orders into the existing list.
     * **Updates:** If an order exists but details changed, it updates the record and highlights it in **RED**.
 * **HTML Table Support:** Capable of parsing "Report" style emails containing tables of multiple orders.
-* **Reply Chain Support:** aggressively cleans quoted text and decodes Quoted-Printable encoding to read order details buried in "Re: Re:" chains.
+* **Reply Chain Support:** Aggressively cleans quoted text and decodes Quoted-Printable encoding to read order details buried in "Re: Re:" chains.
 
 ---
 
@@ -39,9 +44,10 @@ This is a specialized Thunderbird Mail Extension designed to streamline e-commer
 ### 2. Daily Processing
 1.  **Extract:** Select order emails in Thunderbird -> Right-click -> **"Extract Orders"**.
 2.  **Review:** Open the Dashboard. New/Updated orders appear in the list.
-3.  **Link:** If an item is red/unknown, click **"⚠ Link"**.
-    * *Match & Learn:* Link it to an existing product. The extension remembers this alias forever.
-    * *Create New:* Create a new product. It inherits the Store Name from the order.
+3.  **Link & Resolve:**
+    * **Link & Learn:** For permanent aliases (e.g., "Always treat 'A7' as 'Svetinorm'").
+    * **Substitute:** For one-off changes (e.g., "Out of stock, sending alternative").
+    * **Create New:** Create a new product (inherits Store Name from order).
 4.  **Fulfillment:**
     * Enter Tracking Numbers (or paste them).
     * Click **"↩ Reply"** to send the shipping confirmation (uses Store Signature).
